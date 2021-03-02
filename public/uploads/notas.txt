@@ -1,0 +1,42 @@
+Conexión cable pc 
+ethernet 
+
+bitvise en lugar de putty
+
+sudo su
+
+apt install hostapd
+
+********************************
+
+nano /etc/network/interfaces
+
+...
+
+auto lo
+auto eth0
+
+iface lo inet loopback
+allow-hotplug eth0
+
+iface eth0 inet dhcp
+allow-hotplug wlan0
+
+iface wlan0 inet static 
+address 192.168.66.40
+netmask 255.255.255.0
+
+********************************
+
+nano /etc/network/interfaces
+
+interface=wlan0
+ssid=pihole
+hw_mode=g
+channel=6
+macador_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+
+
