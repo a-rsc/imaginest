@@ -11,17 +11,16 @@ try
     $query = $db->prepare($sql);
     $query->execute(array($data['email'], $data['activationCode']));
 
-    if ($query)
-    {
-        foreach ($query as $user)
-        {
-            // Update sql
-            $sql = "UPDATE users SET active = 1, activationCode = NULL, activationDate = now() WHERE iduser = ?";
-            $update = $db->prepare($sql);
-            $update->execute(array($user['iduser']));
+    $user = $query->fetch(\PDO::FETCH_ASSOC);
 
-            require_once('../php/app/toast/activationSuccess.php');
-        }
+    if (!empty($user) && $user['iduser'] != 0)
+    {
+        // Update sql
+        $sql = "UPDATE users SET active = 1, activationCode = NULL, activationDate = now() WHERE iduser = ?";
+        $update = $db->prepare($sql);
+        $update->execute(array($user['iduser']));
+
+        require_once('../php/app/toast/activationSuccess.php');
     }
 }
 catch (PDOException $e)

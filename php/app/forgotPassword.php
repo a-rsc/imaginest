@@ -29,28 +29,28 @@ if (empty($errors))
         $query = $db->prepare($sql);
         $query->execute(array($data['forgotPassword'], $data['forgotPassword']));
 
-        if ($query)
+        $user = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if (!empty($user) && $user['iduser'] != 0)
         {
-            foreach ($query as $user)
-            {
-                // Durante el proceso de registro del usuario se genera un aleatorio que se utiliza en la activación de la cuenta.
-                $data['resetPasswordCode'] = hash('sha256', random_int(1, 1000));
+            // Durante el proceso de registro del usuario se genera un aleatorio que se utiliza en la activación de la cuenta.
+            $data['resetPasswordCode'] = hash('sha256', random_int(1, 1000));
 
-                // Update sql
-                $sql = "UPDATE users SET resetPasswordCode = ?, resetPassword = 1, resetPasswordExpiry = now() WHERE iduser = ?";
-                $update = $db->prepare($sql);
-                $update->execute(array($data['resetPasswordCode'], $user['iduser']));
+            // Update sql
+            $sql = "UPDATE users SET resetPasswordCode = ?, resetPassword = 1, resetPasswordExpiry = now() WHERE iduser = ?";
+            $update = $db->prepare($sql);
+            $update->execute(array($data['resetPasswordCode'], $user['iduser']));
 
-                // https://www.php.net/manual/es/function.ob-end-clean.php
-                // Las cabeceras html se escriben con PHPMailer y se muestra un error que no se puede realizar el redireccionamiento.
-                ob_start();
-                require_once('../php/email/forgotPassword.php');
-                ob_end_clean();
+            // https://www.php.net/manual/es/function.ob-end-clean.php
+            // Las cabeceras html se escriben con PHPMailer y se muestra un error que no se puede realizar el redireccionamiento.
+            ob_start();
+            require_once('../php/email/forgotPassword.php');
+            ob_end_clean();
 
-                header("location: ./index.php?forgotPasswordPending");
-                exit();
-            }
+            header("location: ./index.php?forgotPasswordPending");
+            exit();
         }
+
         $errors['forgotPassword'][] = VALIDATION['noValidation']['error']['msg'];
     }
     catch (PDOException $e)

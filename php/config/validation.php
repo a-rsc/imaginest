@@ -6,6 +6,11 @@ define('VALIDATION', array(
             'msg' => "The fields are wrong!",
         ),
     ),
+    'accountDeleted' => array(
+        'error' => array(
+            'msg' => "The account has been deleted!",
+        ),
+    ),
     'noRegister' => array(
         'unique' => array(
             'msg' => "Username and/or email have already been registered!",
@@ -89,7 +94,7 @@ define('VALIDATION', array(
         'errorSize' =>array(
             'msg' => "Image size is too large!",
         ),
-        
+
         'errorMoreImages' =>array(
             'msg' => "Only one image can be uploaded!",
         ),

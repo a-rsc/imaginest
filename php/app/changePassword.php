@@ -47,25 +47,25 @@ if (empty($errors))
         $query = $db->prepare($sql);
         $query->execute(array($data['email'], $data['forgotPasswordCode']));
 
-        if ($query)
+        $user = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if (!empty($user) && $user['iduser'] != 0)
         {
-            foreach ($query as $user)
-            {
-                // Update sql
-                $sql = "UPDATE users SET password = ?, resetPassword = 0, resetPasswordCode = NULL, resetPasswordExpiry = now() WHERE iduser = ?";
-                $update = $db->prepare($sql);
-                $update->execute(array(helper_password_hash($data['password']), $user['iduser']));
+            // Update sql
+            $sql = "UPDATE users SET password = ?, resetPassword = 0, resetPasswordCode = NULL, resetPasswordExpiry = now() WHERE iduser = ?";
+            $update = $db->prepare($sql);
+            $update->execute(array(helper_password_hash($data['password']), $user['iduser']));
 
-                // https://www.php.net/manual/es/function.ob-end-clean.php
-                // Las cabeceras html se escriben con PHPMailer y se muestra un error que no se puede realizar el redireccionamiento.
-                ob_start();
-                require_once('../php/email/changePassword.php');
-                ob_end_clean();
+            // https://www.php.net/manual/es/function.ob-end-clean.php
+            // Las cabeceras html se escriben con PHPMailer y se muestra un error que no se puede realizar el redireccionamiento.
+            ob_start();
+            require_once('../php/email/changePassword.php');
+            ob_end_clean();
 
-                header("location: ./index.php?resetPasswordSuccess");
-                exit();
-            }
+            header("location: ./index.php?resetPasswordSuccess");
+            exit();
         }
+
         $errors['noValidation'][] = VALIDATION['noValidation']['error']['msg'];
     }
     catch (PDOException $e)

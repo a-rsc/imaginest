@@ -18,7 +18,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
 {
     $errors = array();
 
-    if ((sizeof($_POST) === 3 && isset($_POST['password']) && isset($_POST['newPassword']) && isset($_POST['confirmPassword'])))
+    if (sizeof($_POST) === 1 && isset($_POST['delete']))
+    {
+        require_once('../php/app/accountDeleted.php');
+    }
+    else if ((sizeof($_POST) === 3 && isset($_POST['password']) && isset($_POST['newPassword']) && isset($_POST['confirmPassword'])))
     {
         require_once('../php/app/accountSecurity.php');
     }
@@ -185,7 +189,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
                             <div class="card mb-4">
                                 <div class="card-header">Change Password</div>
                                 <div class="card-body">
-                                <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                                    <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                                         <!-- Form Group (current password)-->
                                         <div class="form-group">
                                             <label class="small mb-1" for="currentPassword">Current Password</label>
@@ -215,6 +219,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
                                                 }
                                             }
                                         ?>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <!-- Delete account card-->
+                            <div class="card mb-4">
+                                <div class="card-header">Delete Account</div>
+                                <div class="card-body">
+                                    <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+                                        <p>Deleting your account is a permanent action and cannot be undone. If you are sure you want to delete your account, select the button below.</p>
+                                        <button type="submit" name="delete" class="btn btn-danger-soft text-danger" value="delete">I understand, delete my account</button>
                                     </form>
                                 </div>
                             </div>

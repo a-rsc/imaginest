@@ -71,28 +71,39 @@ if (empty($errors))
         $query = $db->prepare($sql);
         $query->execute(array($data['login'], $data['login']));
 
-        if ($query)
+        $user = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if (!empty($user) && $user['iduser'] != 0)
         {
-            foreach ($query as $user)
+            if (password_verify($data['password'], $user['password']))
             {
-                if (password_verify($data['password'], $user['password']))
-                {
-                    // Update sql
-                    // Si el usuario ha perdido el código de activación, cuando intenta logearse si no está activo se vuelve a enviar otro código
-                    $data['activationCode'] = hash('sha256', random_int(1, 1000));
-                    $sql = "UPDATE users SET openSession = ?, activationCode = ? WHERE iduser = ?";
-                    $update = $db->prepare($sql);
-                    $update->execute(array((boolean) $data['openSession'], $data['activationCode'], $user['iduser']));
+                // Update sql
+                // Si el usuario ha perdido el código de activación, cuando intenta logearse si no está activo se vuelve a enviar otro código
+                $data['activationCode'] = hash('sha256', random_int(1, 1000));
+                $sql = "UPDATE users SET openSession = ?, activationCode = ? WHERE iduser = ?";
+                $update = $db->prepare($sql);
+                $update->execute(array((boolean) $data['openSession'], $data['activationCode'], $user['iduser']));
 
-                    // https://www.php.net/manual/es/function.ob-end-clean.php
-                    // Las cabeceras html se escriben con PHPMailer y se muestra un error que no se puede realizar el redireccionamiento.
-                    ob_start();
-                    require_once('../php/email/register.php');
-                    ob_end_clean();
+                // https://www.php.net/manual/es/function.ob-end-clean.php
+                // Las cabeceras html se escriben con PHPMailer y se muestra un error que no se puede realizar el redireccionamiento.
+                ob_start();
+                require_once('../php/email/register.php');
+                ob_end_clean();
 
-                    header("location: ./index.php?activationPending");
-                    exit();
-                }
+                header("location: ./index.php?activationPending");
+                exit();
+            }
+        }
+        else
+        {
+            // Se debe verificar que el username/email corresponde efectivamente con un username/email registrado en la tabla users y con valor 1 al campo active.
+            $sql = 'SELECT count(*) AS count FROM users WHERE (username = ? || email = ?) && removedOn is not null LIMIT 1';
+            $query = $db->prepare($sql);
+            $query->execute(array($data['login'], $data['login']));
+
+            if ($query->rowCount() != 0)
+            {
+                $errors['accountDeleted'][] = VALIDATION['accountDeleted']['error']['msg'];
             }
         }
 

@@ -40,26 +40,25 @@ if (empty($errors))
         $query = $db->prepare($sql);
         $query->execute(array($_SESSION['user']['iduser']));
 
-        foreach ($query as $user)
+        $user = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if (empty($errors) && (!empty($user)) && password_verify($data['password'], $user['password']))
         {
-            if (empty($errors) && password_verify($data['password'], $user['password']))
-            {
-                // Update sql
-                $sql = "UPDATE users SET password = ? WHERE iduser = ?";
-                $update = $db->prepare($sql);
-                $update->execute(array(helper_password_hash($data['newPassword']), $_SESSION['user']['iduser']));
+            // Update sql
+            $sql = "UPDATE users SET password = ? WHERE iduser = ?";
+            $update = $db->prepare($sql);
+            $update->execute(array(helper_password_hash($data['newPassword']), $_SESSION['user']['iduser']));
 
-                // https://www.php.net/manual/es/function.ob-end-clean.php
-                // Las cabeceras html se escriben con PHPMailer y se muestra un error que no se puede realizar el redireccionamiento.
-                ob_start();
-                require_once('../php/email/changePassword.php');
-                ob_end_clean();
+            // https://www.php.net/manual/es/function.ob-end-clean.php
+            // Las cabeceras html se escriben con PHPMailer y se muestra un error que no se puede realizar el redireccionamiento.
+            ob_start();
+            require_once('../php/email/changePassword.php');
+            ob_end_clean();
 
-            }
-            else if (!password_verify($data['password'], $user['password']))
-            {
-                $errors['password'][] = VALIDATION['password']['error']['msg'];
-            }
+        }
+        else if (!password_verify($data['password'], $user['password']))
+        {
+            $errors['password'][] = VALIDATION['password']['error']['msg'];
         }
     }
     catch (PDOException $e){

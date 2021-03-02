@@ -21,7 +21,7 @@ require_once('../php/config/env.php');
 </head>
 <body class="bodyAuthentication">
     <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
         <div class="container">
             <a class="navbar-brand" href="<?php echo CONFIG['URL'] . "/index.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>">
                 <h1><i class="fas fa-globe"></i> <?php echo CONFIG['APP_NAME']; ?></h1>
@@ -32,10 +32,10 @@ require_once('../php/config/env.php');
         <div id="layoutAuthentication_content">
             <main>
                 <div class="container">
-                    <div class="row mt-4">
+                    <div class="row">
                         <div class="col">
-                            <div class="card shadow-lg border-lg border-primary p-3 mt-5">
-                                <h1>Terms &amp; Conditions</h1>
+                            <div class="card shadow-lg border-lg border-primary p-3">
+                                <h1 class="text-primary text-center my-3">Terms &amp; Conditions</h1>
                                 <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam, facere.</h2>
                                 <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quas repellat nostrum maiores atque id sit neque quia voluptas modi assumenda explicabo saepe rem laborum culpa numquam temporibus ea ipsa, quam perspiciatis est! Corporis nostrum commodi cupiditate sunt ullam architecto nisi deserunt voluptatem, porro, exercitationem numquam eveniet assumenda vitae nam ratione consectetur dolorem sed sapiente? Beatae quis vero, quod adipisci, ducimus praesentium consequuntur totam, tenetur error sunt dolore suscipit quasi cum pariatur esse animi! Hic, nemo eveniet molestias, consectetur id distinctio in est cum magni ea adipisci rerum. Veniam repellendus assumenda cupiditate ullam id aut, pariatur ad nihil laboriosam maxime aliquid.</p>
                                 <h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam, facere.</h2>

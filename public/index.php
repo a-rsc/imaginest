@@ -120,7 +120,11 @@ else
                                         <?php
                                             if (!empty($errors))
                                             {
-                                                if (array_key_exists('noValidation', $errors))
+                                                if (array_key_exists('accountDeleted', $errors))
+                                                {
+                                                    echo "<p class='errors'>" . reset($errors['accountDeleted']) . "</p>";
+                                                }
+                                                else if (array_key_exists('noValidation', $errors))
                                                 {
                                                     echo "<p class='errors'>" . reset($errors['noValidation']) . "</p>";
                                                 }
