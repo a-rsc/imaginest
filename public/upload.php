@@ -182,7 +182,6 @@ else
                             <!-- Basic login form-->
                             <div class="card shadow-lg border-lg border-primary rounded-lg">
                                 <div class="card-body bg-primary">
-                                    <?php echo $toast ?? NULL; ?>
                                     <?php
                                         if(isset($_SESSION['user']['lastimage']))
                                         {
