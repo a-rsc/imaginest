@@ -12,4 +12,4 @@ define('CONFIG', array(
     'BBDD_PASSWORD' => '',
 ));
 
-require_once __DIR__.email.php;
+require_once('../php/config/email.php');
