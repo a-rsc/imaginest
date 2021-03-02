@@ -60,6 +60,8 @@ if (empty($errors))
         if(move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/{$data['name']}"))
         {
             $_SESSION['user']['lastimage'] = "uploads/{$data['name']}";
+            header("location: ./upload.php?uploadImageSuccess");
+            exit();
         }
     }
     catch (PDOException $e)

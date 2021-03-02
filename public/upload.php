@@ -23,6 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         require_once('../php/app/uploadImage.php');
     }
 }
+else
+{
+    // toast
+    if (sizeof($_GET) === 1 && isset($_GET['uploadImageSuccess']))
+    {
+        require_once('../php/app/toast/uploadImageSuccess.php');
+    }
+}
 
 ?>
 <!DOCTYPE html>
