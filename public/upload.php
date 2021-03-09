@@ -8,11 +8,9 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-require_once('../php/config/env.php');
-require_once('../php/bbdd/connecta_db_persistent.php');
-require_once('../php/app/helpers.php');
+require_once(dirname(__DIR__, 1) . '/php/config/env.php');
 
-require_once('../php/config/validation.php');
+require_once(dirname(__DIR__, 1) . '/php/config/validation.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
@@ -20,18 +18,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 
     if (sizeof($_FILES) === 1 && isset($_FILES['image']))
     {
-        require_once('../php/app/uploadImage.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/upload.php');
     }
-}
-else
-{
-    // toast
-    if (sizeof($_GET) === 1 && isset($_GET['uploadImageSuccess']))
-    {
-        require_once('../php/app/toast/uploadImageSuccess.php');
-    }
-}
 
+    // toast
+    if (empty($errors) && $_SERVER['REQUEST_METHOD'] === 'POST')
+    {
+        require_once(dirname(__DIR__, 1) . '/php/app/toast/uploadSuccess.php');
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -53,7 +48,7 @@ else
         <!-- * * Tip * * You can use text or an image for your navbar brand.-->
         <!-- * * * * * * When using an image, we recommend the SVG format.-->
         <!-- * * * * * * Dimensions: Maximum height: 32px, maximum width: 240px-->
-        <a class="navbar-brand text-center" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><i class="fas fa-globe"></i> <?php echo CONFIG['APP_NAME']; ?></a>
+        <a class="navbar-brand text-primary" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><i class="fas fa-globe"></i> <?php echo CONFIG['APP_NAME']; ?></a>
         <!-- Sidenav Toggle Button-->
         <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 mr-lg-2 d-sm-none d-lg-block" id="sidebarToggle"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search Input-->
@@ -163,12 +158,12 @@ else
                 <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
                     <div class="container">
                         <div class="page-header-content pt-4">
-                        <?php echo $toast ?? NULL; ?>
+                            <?php echo $toast ?? NULL; ?>
                             <div class="row align-items-center justify-content-between">
                                 <div class="col-auto mt-4">
                                     <h1 class="page-header-title">
                                     <div class="page-header-icon"><i class="fas fa-camera-retro"></i></div>
-                                        Upload a post to Imaginest!
+                                        Upload a post to <?php echo CONFIG['APP_NAME']; ?>!
                                     </h1>
                                     <div class="page-header-subtitle">Be inspired by <?php echo CONFIG['APP_NAME']; ?></div>
                                 </div>
@@ -178,50 +173,91 @@ else
                 </header>
                 <div class="container" style="margin-top: -3rem;">
                     <div class="row justify-content-center">
-                        <div class="col-lg-7">
-                            <!-- Basic login form-->
-                            <div class="card shadow-lg border-lg border-primary rounded-lg">
-                                <div class="card-body bg-primary">
-                                    <?php
-                                        if(isset($_SESSION['user']['lastimage']))
-                                        {
-                                            echo "<div class=\"text-center my-3\"><img src=\"" . $_SESSION["user"]["lastimage"] . "\" alt=\"upload.svg\" width=\"400\"></div>";
-                                        }
-                                        else
-                                        {
-                                            echo '<div class="text-center my-3"><img src="assets/img/upload.svg" alt="upload.svg" width="250"></div>';
-                                        }
-                                    ?>
-                                    <!-- Login form-->
-                                    <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" enctype="multipart/form-data">
-                                        <!-- Form Group (image)-->
-                                        <div class="form-group">
-                                            <label class="small mb-1 text-white" for="image">Image</label>
+                        <div class="col-lg-8">
+                            <div class="card shadow-lg border-lg rounded-lg">
+                                <div class="card-body">
+
+<?php
+if (empty($errors) && $_SERVER['REQUEST_METHOD'] === 'POST')
+{
+    echo <<< heredoc
+                                    <div class="row">
+                                        <div class="col-8 position-relative">
+heredoc;
+
+    echo "<img class=\"w-100 border border-lg shadow\" src=\"uploads/{$data['name']}\" alt=\"First slide\">";
+    echo "<div class=\"position-absolute\" style=\"bottom: 10px;\">";
+
+    $colours = array('blue', 'indigo', 'purple', 'pink', 'red', 'orange', 'yellow', 'green', 'teal', 'cyan', 'white', 'gray', 'primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark', 'black');
+
+    // $colours = array('Pink', 'LightPink', 'HotPink', 'DeepPink', 'PaleVioletRed', 'MediumVioletRed', 'Lavender', 'Thistle', 'Plum', 'Orchid', 'Violet', 'Fuchsia', 'Magenta', 'MediumOrchid', 'DarkOrchid', 'DarkViolet', 'BlueViolet', 'DarkMagenta', 'Purple', 'MediumPurple', 'MediumSlateBlue', 'SlateBlue', 'DarkSlateBlue', 'RebeccaPurple', 'Indigo', 'LightSalmon', 'Salmon', 'DarkSalmon', 'LightCoral', 'IndianRed', 'Crimson', 'Red', 'FireBrick', 'DarkRed', 'Orange', 'DarkOrange', 'Coral', 'Tomato', 'OrangeRed', 'Gold', 'Yellow', 'LightYellow', 'LemonChiffon', 'LightGoldenRodYellow', 'PapayaWhip', 'Moccasin', 'PeachPuff', 'PaleGoldenRod', 'Khaki', 'DarkKhaki', 'GreenYellow', 'Chartreuse', 'LawnGreen', 'Lime', 'LimeGreen', 'PaleGreen', 'LightGreen', 'MediumSpringGreen', 'SpringGreen', 'MediumSeaGreen', 'SeaGreen', 'ForestGreen', 'Green', 'DarkGreen', 'YellowGreen', 'OliveDrab', 'DarkOliveGreen', 'MediumAquaMarine', 'DarkSeaGreen', 'LightSeaGreen', 'DarkCyan', 'Teal', 'Aqua', 'Cyan', 'LightCyan', 'PaleTurquoise', 'Aquamarine', 'Turquoise', 'MediumTurquoise', 'DarkTurquoise', 'CadetBlue', 'SteelBlue', 'LightSteelBlue', 'LightBlue', 'PowderBlue', 'LightSkyBlue', 'SkyBlue', 'CornflowerBlue', 'DeepSkyBlue', 'DodgerBlue', 'RoyalBlue', 'Blue', 'MediumBlue', 'DarkBlue', 'Navy', 'MidnightBlue', 'Cornsilk', 'BlanchedAlmond', 'Bisque', 'NavajoWhite', 'Wheat', 'BurlyWood', 'Tan', 'RosyBrown', 'SandyBrown', 'GoldenRod', 'DarkGoldenRod', 'Peru', 'Chocolate', 'Olive', 'SaddleBrown', 'Sienna', 'Brown', 'Maroon', 'White', 'Snow', 'HoneyDew', 'MintCream', 'Azure', 'AliceBlue', 'GhostWhite', 'WhiteSmoke', 'SeaShell', 'Beige', 'OldLace', 'FloralWhite', 'Ivory', 'AntiqueWhite', 'Linen', 'LavenderBlush', 'MistyRose', 'Gainsboro', 'LightGray', 'Silver', 'DarkGray', 'DimGray', 'Gray', 'LightSlateGray', 'SlateGray', 'DarkSlateGray', 'Black');
+
+    // La variable no puede llamarse hashtag por que se mantiene la referencia anterior...
+    foreach ($hashtags[0] as $ht) {
+        echo "<span class=\"badge badge-pill badge-{$colours[array_rand($colours, 1)]} mx-3\">#{$ht}</span>";
+    }
+
+    echo <<< heredoc
+                                            </div>
+                                        </div>
+                                        <div class="col d-flex align-content-between flex-wrap">
+                                            <p>{$data['description']}</p>
+                                        </div>
+                                    </div>
+heredoc;
+
+}
+else
+{
+
+    echo <<< heredoc
+                                    <img class="mx-auto img-fluid d-block" src="assets/img/upload.png" alt="Upload post to <?php echo CONFIG['APP_NAME']; ?>" width="250">
+                                    <!-- Post form-->
+heredoc;
+
+    echo "<form method=\"post\" action=\"" . htmlspecialchars($_SERVER['PHP_SELF']) . "\" enctype=\"multipart/form-data\">";
+
+    echo <<< heredoc
+                                    <!-- Form Group (image)-->
+                                    <div class="form-group">
+                                        <label class="small mb-1" for="image">Image</label>
                                             <div class="custom-file">
                                                 <input type="file" class="custom-file-input" id="image" name="image" accept="image/x-png,image/gif,image/jpeg" required autofocus>
                                                 <label class="custom-file-label" for="image">Choose an image</label>
-                                            </div>
-                                            <?php if (!empty($errors) && array_key_exists('image', $errors)) echo "<p class='errors'>" . reset($errors['image']) . "</p>"; ?>
-                                        </div>
-                                        <!-- Form Group (description)-->
-                                        <div class="form-group">
-                                            <label class="small mb-1 text-white" for="image">Description</label>
-                                            <textarea name="description" <?php echo "maxlength='" . VALIDATION['description']['length']['max'] . "'"; ?> rows="6" cols="80" placeholder="Enter a comment for the photo" class="form-control border-0 "></textarea>
-                                        </div>
-                                        <!-- Form Group (upload box)-->
-                                        <div class="form-group mt-4 mb-0">
-                                            <button type="submit" class="btn btn-light" title="Upload">Upload</button>
-                                        </div>
-                                        <?php
-                                            if (!empty($errors))
-                                            {
-                                                if (array_key_exists('noValidation', $errors))
-                                                {
-                                                    echo "<p class='errors'>" . reset($errors['noValidation']) . "</p>";
-                                                }
-                                            }
-                                        ?>
-                                    </form>
+                                                </div>
+heredoc;
+
+    if (!empty($errors) && array_key_exists('image', $errors)) echo "<p class=\"errors\">" . reset($errors['image']) . "</p>";
+
+    echo <<< heredoc
+            </div>
+            <!-- Form Group (description)-->
+            <div class="form-group">
+                <label class="small mb-1" for="image">Description</label>
+    heredoc;
+
+    echo "<textarea name=\"description\" maxlength=\"" . VALIDATION['description']['length']['max'] . "\" rows=\"6\" cols=\"80\" placeholder=\"Enter a comment for the photo\" class=\"form-control\"></textarea>";
+
+    echo <<< heredoc
+            </div>
+            <!-- Form Group (upload box)-->
+            <div class="form-group mt-4 mb-0">
+                <button type="submit" class="btn btn-primary" title="Upload">Upload</button>
+            </div>
+heredoc;
+
+    if (!empty($errors))
+    {
+        if (array_key_exists('noValidation', $errors))
+        {
+            echo "<p class=\"errors\">" . reset($errors['noValidation']) . "</p>";
+        }
+    }
+
+    echo "</form>";
+}
+?>
+
                                 </div>
                             </div>
                         </div>

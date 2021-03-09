@@ -52,7 +52,7 @@ if (empty($errors))
         if (!empty($user) && $user['iduser'] != 0)
         {
             // Update sql
-            $sql = "UPDATE users SET password = ?, resetPassword = 0, resetPasswordCode = NULL, resetPasswordExpiry = now() WHERE iduser = ?";
+            $sql = 'UPDATE users SET password = ?, resetPassword = 0, resetPasswordCode = NULL, resetPasswordExpiry = now() WHERE iduser = ?';
             $update = $db->prepare($sql);
             $update->execute(array(helper_password_hash($data['password']), $user['iduser']));
 

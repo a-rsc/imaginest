@@ -37,7 +37,7 @@ if (empty($errors))
             $data['resetPasswordCode'] = hash('sha256', random_int(1, 1000));
 
             // Update sql
-            $sql = "UPDATE users SET resetPasswordCode = ?, resetPassword = 1, resetPasswordExpiry = now() WHERE iduser = ?";
+            $sql = 'UPDATE users SET resetPasswordCode = ?, resetPassword = 1, resetPasswordExpiry = now() WHERE iduser = ?';
             $update = $db->prepare($sql);
             $update->execute(array($data['resetPasswordCode'], $user['iduser']));
 

@@ -81,6 +81,67 @@ try{
     ENGINE = InnoDB;
 
 
+    -- -----------------------------------------------------
+    -- Table `imaginest`.`images_has_users`
+    -- -----------------------------------------------------
+    DROP TABLE IF EXISTS `imaginest`.`images_has_users` ;
+
+    CREATE TABLE IF NOT EXISTS `imaginest`.`images_has_users` (
+      `images_idimages` INT NOT NULL,
+      `users_iduser` INT NOT NULL,
+      `like` TINYINT NOT NULL DEFAULT 0,
+      `dislike` TINYINT NOT NULL DEFAULT 0,
+      PRIMARY KEY (`images_idimages`, `users_iduser`),
+      INDEX `fk_images_has_users_users1_idx` (`users_iduser` ASC) ,
+      INDEX `fk_images_has_users_images1_idx` (`images_idimages` ASC) ,
+      CONSTRAINT `fk_images_has_users_images1`
+        FOREIGN KEY (`images_idimages`)
+        REFERENCES `imaginest`.`images` (`idimages`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
+      CONSTRAINT `fk_images_has_users_users1`
+        FOREIGN KEY (`users_iduser`)
+        REFERENCES `imaginest`.`users` (`iduser`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+    -- -----------------------------------------------------
+    -- Table `imaginest`.`hashtags`
+    -- -----------------------------------------------------
+    DROP TABLE IF EXISTS `imaginest`.`hashtags` ;
+
+    CREATE TABLE IF NOT EXISTS `imaginest`.`hashtags` (
+      `hashtag` VARCHAR(60) NOT NULL,
+      PRIMARY KEY (`hashtag`))
+    ENGINE = InnoDB;
+
+
+    -- -----------------------------------------------------
+    -- Table `imaginest`.`hashtags_has_images`
+    -- -----------------------------------------------------
+    DROP TABLE IF EXISTS `imaginest`.`hashtags_has_images` ;
+
+    CREATE TABLE IF NOT EXISTS `imaginest`.`hashtags_has_images` (
+      `images_idimages` INT NOT NULL,
+      `hashtags_hashtag` VARCHAR(60) NOT NULL,
+      PRIMARY KEY (`images_idimages`, `hashtags_hashtag`),
+      INDEX `fk_hashtags_has_images_images1_idx` (`images_idimages` ASC) ,
+      INDEX `fk_hashtags_has_images_hashtags1_idx` (`hashtags_hashtag` ASC) ,
+      CONSTRAINT `fk_hashtags_has_images_hashtags1`
+        FOREIGN KEY (`hashtags_hashtag`)
+        REFERENCES `imaginest`.`hashtags` (`hashtag`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION,
+      CONSTRAINT `fk_hashtags_has_images_images1`
+        FOREIGN KEY (`images_idimages`)
+        REFERENCES `imaginest`.`images` (`idimages`)
+        ON DELETE NO ACTION
+        ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
     SET SQL_MODE=@OLD_SQL_MODE;
     SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
     SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

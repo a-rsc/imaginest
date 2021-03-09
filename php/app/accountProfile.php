@@ -63,7 +63,7 @@ if (empty($errors))
     try
     {
         // Update sql
-        $sql = "UPDATE users SET username = ?, firstname = ?, lastname = ?, email = ? WHERE iduser = ?";
+        $sql = 'UPDATE users SET username = ?, firstname = ?, lastname = ?, email = ? WHERE iduser = ?';
         $update = $db->prepare($sql);
         $update->execute(array($data['username'], $data['firstname'], $data['lastname'], $data['email'], $_SESSION['user']['iduser']));
 

@@ -2,6 +2,11 @@
 *
 */
 
+.topnav a.navbar-brand {
+    font-size: 1.75rem;
+    text-align: center;
+}
+
 body.bodyAuthentication {
     background: url(../assets/img/imaginest.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
@@ -15,6 +20,15 @@ body.bodyAuthentication {
     font-size: 2.5rem;
 }
 
+.custom-file-label::after {
+    color: white;
+    background-color: #0275bf;
+}
+
+p {
+    text-align: justify;
+}
+
 form input.errors {
     border: solid 1px red;
 }
@@ -22,6 +36,15 @@ form input.errors {
 form p.errors {
     margin-top: 1rem;
     color: red;
+}
+
+#layoutPrivacyTerms h2 {
+    font-size: 0.95rem;
+    text-align: justify;
+}
+
+#layoutPrivacyTerms p {
+    font-size: 0.85rem;
 }
 
 #return-to-top {
@@ -34,10 +57,10 @@ form p.errors {
     display: none;
   }
 
-  #return-to-top svg {
+#return-to-top svg {
     margin: 0;
     padding: 0;
     font-size: 4rem;
     color: black;
     opacity: 0.75;
-  }
+}

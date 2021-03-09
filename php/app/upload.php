@@ -9,7 +9,6 @@ $data['size'] = $_FILES['image']['size'];
 $data['error'] = $_FILES['image']['error'];
 $data['type'] = $_FILES['image']['type'];
 $data['type'] = $_FILES['image']['type'];
-
 $data['description'] = filter_input(INPUT_POST, 'description');
 
 $type = explode('.', $data['name']);
@@ -53,15 +52,36 @@ if (empty($errors))
 {
     try
     {
-        $sql = "INSERT INTO images (users_iduser, description, publicationDate, name) VALUES (?, ?, now(), ?)";
+        $sql = 'INSERT INTO images (users_iduser, description, publicationDate, name) VALUES (?, ?, now(), ?)';
         $insert = $db->prepare($sql);
         $insert->execute(array($_SESSION['user']['iduser'], $data['description'], $data['name']));
 
+        $lastInsertId = $db->lastInsertId();
+
         if(move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/{$data['name']}"))
         {
-            $_SESSION['user']['lastimage'] = "uploads/{$data['name']}";
-            header("location: ./upload.php?uploadImageSuccess");
-            exit();
+            preg_match_all('/(?<!\w)#\w+/', $data['description'], $hashtags);
+
+            // reference
+            foreach ($hashtags[0] as &$hashtag) {
+
+                $hashtag = substr($hashtag, 1);
+
+                $sql = 'SELECT count(*) AS count FROM hashtags WHERE hashtag = ? LIMIT 1';
+                $query = $db->prepare($sql);
+                $query->execute(array($hashtag));
+
+                if ($query->rowCount() != 0)
+                {
+                    $sql = 'INSERT INTO hashtags VALUES (?)';
+                    $insert = $db->prepare($sql);
+                    $insert->execute(array($hashtag));
+                }
+
+                $sql = 'INSERT INTO hashtags_has_images VALUES (?, ?)';
+                $insert = $db->prepare($sql);
+                $insert->execute(array($lastInsertId, $hashtag));
+            }
         }
     }
     catch (PDOException $e)

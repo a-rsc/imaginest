@@ -2,8 +2,9 @@ SHOW DATABASES;
 USE imaginest;
 SHOW TABLES;
 SELECT * FROM users;
-
+SELECT * FROM hashtags;
 SELECT * FROM images;
+SELECT * FROM hashtags_has_images;
 
 SELECT count(*) FROM users WHERE (username = 'albert' || email = 'albert@hotmail.com') LIMIT 1;
 SELECT * FROM users WHERE (username = 'alvaro' || email = 'a_rsc@hotmail.com') && active = 1 LIMIT 1;

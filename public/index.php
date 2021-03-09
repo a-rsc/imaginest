@@ -8,11 +8,9 @@ if (isset($_SESSION['user']))
     exit();
 }
 
-require_once('../php/config/env.php');
-require_once('../php/bbdd/connecta_db_persistent.php');
-require_once('../php/app/helpers.php');
+require_once(dirname(__DIR__, 1) . '/php/config/env.php');
 
-require_once('../php/config/validation.php');
+require_once(dirname(__DIR__, 1) . '/php/config/validation.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
@@ -22,11 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         (sizeof($_POST) === 2 && isset($_POST['username']) && isset($_POST['password'])) ||
         (sizeof($_POST) === 3 && isset($_POST['username']) && isset($_POST['password']) && isset($_POST['openSession'])))
     {
-        require_once('../php/app/login.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/login.php');
     }
     else if (sizeof($_POST) === 1 && isset($_POST['forgotPasswordUsername']))
     {
-        require_once('../php/app/forgotPassword.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/forgotPassword.php');
     }
     else
     {
@@ -39,19 +37,19 @@ else
     // toast
     if (sizeof($_GET) === 1 && isset($_GET['activationPending']))
     {
-        require_once('../php/app/toast/activationPending.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/toast/activationPending.php');
     }
     else if (sizeof($_GET) === 2 && isset($_GET['activationCode']) && isset($_GET['email']))
     {
-        require_once('../php/app/activation.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/activation.php');
     }
     else if (sizeof($_GET) === 1 && isset($_GET['forgotPasswordPending']))
     {
-        require_once('../php/app/toast/forgotPasswordPending.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/toast/forgotPasswordPending.php');
     }
     else if (sizeof($_GET) === 1 && isset($_GET['forgotPasswordSuccess']))
     {
-        require_once('../php/app/toast/forgotPasswordSuccess.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/toast/forgotPasswordSuccess.php');
     }
 }
 
@@ -87,7 +85,7 @@ else
                         <div class="col-lg-5">
                             <!-- Basic login form-->
                             <div class="card shadow-lg border-lg border-primary rounded-lg mt-5">
-                                <div class="card-header justify-content-center"><h3 class="font-weight-light my-4">Sign in</h3></div>
+                                <div class="card-header justify-content-center"><h1 class="text-primary display-4 text-center my-2">Sign in</h1></div>
                                 <div class="card-body">
                                     <?php echo $toast ?? NULL; ?>
                                     <!-- Login form-->

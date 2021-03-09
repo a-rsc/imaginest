@@ -3,7 +3,7 @@
 try
 {
     // Update sql
-    $sql = "UPDATE users SET removedOn = now() WHERE iduser = ?";
+    $sql = 'UPDATE users SET removedOn = now() WHERE iduser = ?';
     $update = $db->prepare($sql);
     $update->execute(array($_SESSION['user']['iduser']));
 

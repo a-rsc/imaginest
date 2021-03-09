@@ -45,7 +45,7 @@ if (empty($errors))
         if (empty($errors) && (!empty($user)) && password_verify($data['password'], $user['password']))
         {
             // Update sql
-            $sql = "UPDATE users SET password = ? WHERE iduser = ?";
+            $sql = 'UPDATE users SET password = ? WHERE iduser = ?';
             $update = $db->prepare($sql);
             $update->execute(array(helper_password_hash($data['newPassword']), $_SESSION['user']['iduser']));
 

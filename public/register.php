@@ -8,24 +8,28 @@ if (isset($_SESSION['user']))
     exit();
 }
 
-require_once('../php/config/env.php');
-require_once('../php/bbdd/connecta_db_persistent.php');
-require_once('../php/app/helpers.php');
+require_once(dirname(__DIR__, 1) . '/php/config/env.php');
 
-require_once('../php/config/validation.php');
+require_once(dirname(__DIR__, 1) . '/php/config/validation.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
     $errors = array();
 
     if (
+        (5 <= sizeof($_POST) && sizeof($_POST) <=7 &&
+        isset($_POST['username']) &&
+        isset($_POST['email']) &&
+        isset($_POST['password']) &&
+        isset($_POST['confirmPassword']) &&
+        isset($_POST['termsAndConditions'])) ||
         (4 <= sizeof($_POST) && sizeof($_POST) <=6 &&
         isset($_POST['username']) &&
         isset($_POST['email']) &&
         isset($_POST['password']) &&
         isset($_POST['confirmPassword'])))
     {
-        require_once('../php/app/register.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/register.php');
     }
     else
     {
@@ -65,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                         <div class="col-lg-7">
                             <!-- Basic registration form-->
                             <div class="card shadow-lg border-lg border-primary rounded-lg mt-5">
-                                <div class="card-header justify-content-center"><h3 class="font-weight-light my-4">Sign up</h3></div>
+                            <div class="card-header justify-content-center"><h1 class="text-primary display-4 text-center my-2">Sign up</h1></div>
                                 <div class="card-body">
                                     <!-- Registration form-->
                                     <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
@@ -122,11 +126,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                             <!-- Form Group (form submission)-->
                                             <div class="form-group d-flex align-items-center justify-content-between">
                                                 <div class="custom-control custom-control-solid custom-checkbox">
-                                                    <input class="custom-control-input small" id="customCheck1" type="checkbox" />
-                                                    <label class="custom-control-label mr-3" for="customCheck1">
+                                                    <input class="custom-control-input small" id="termsAndConditions" type="checkbox" name="termsAndConditions" />
+                                                    <label class="custom-control-label mr-3" for="termsAndConditions">
                                                         I accept the
-                                                        <a href="#!">Terms &amp; Conditions.</a>
+                                                        <a href="<?php echo CONFIG['URL'] . "/terms.php"; ?>" title="Terms & Conditions." target="_black">Terms &amp; Conditions.</a>
                                                     </label>
+                                                    <?php if (!empty($errors) && array_key_exists('termsAndConditions', $errors)) echo "<p class='errors'>" . reset($errors['termsAndConditions']) . "</p>"; ?>
                                                 </div>
                                             <!-- Form Group (create account submit)-->
                                             <button type="submit" class="mt-3 btn btn-primary" title="Sign up">Sign up</button>

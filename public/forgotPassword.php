@@ -8,11 +8,9 @@ if (isset($_SESSION['user']))
     exit();
 }
 
-require_once('../php/config/env.php');
-require_once('../php/bbdd/connecta_db_persistent.php');
-require_once('../php/app/helpers.php');
+require_once(dirname(__DIR__, 1) . '/php/config/env.php');
 
-require_once('../php/config/validation.php');
+require_once(dirname(__DIR__, 1) . '/php/config/validation.php');
 
 if($_SERVER['REQUEST_METHOD'] === 'POST')
 {
@@ -20,7 +18,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
 
     if (sizeof($_POST) === 4 && isset($_POST['email']) && isset($_POST['forgotPasswordCode']) && isset($_POST['password']) && isset($_POST['confirmPassword']))
     {
-        require_once('../php/app/changePassword.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/changePassword.php');
     }
     else
     {
@@ -70,7 +68,7 @@ else
                         <div class="col-lg-7">
                             <!-- Basic registration form-->
                             <div class="card shadow-lg border-lg border-primary rounded-lg mt-5">
-                                <div class="card-header justify-content-center"><h3 class="font-weight-light my-4">Forgot your password?</h3></div>
+                                <div class="card-header justify-content-center"><h1 class="text-primary display-4 text-center my-2">Forgot your password?</h1></div>
                                 <div class="card-body">
                                     <!-- Registration form-->
                                     <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">

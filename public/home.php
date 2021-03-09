@@ -8,9 +8,7 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-require_once('../php/config/env.php');
-require_once('../php/bbdd/connecta_db_persistent.php');
-require_once('../php/app/helpers.php');
+require_once(dirname(__DIR__, 1) . '/php/config/env.php');
 
 ?>
 <!DOCTYPE html>
@@ -34,7 +32,7 @@ require_once('../php/app/helpers.php');
         <!-- * * Tip * * You can use text or an image for your navbar brand.-->
         <!-- * * * * * * When using an image, we recommend the SVG format.-->
         <!-- * * * * * * Dimensions: Maximum height: 32px, maximum width: 240px-->
-        <a class="navbar-brand text-center" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><i class="fas fa-globe"></i> <?php echo CONFIG['APP_NAME']; ?></a>
+        <a class="navbar-brand text-primary" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><i class="fas fa-globe"></i> <?php echo CONFIG['APP_NAME']; ?></a>
         <!-- Sidenav Toggle Button-->
         <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 mr-lg-2 d-sm-none d-lg-block" id="sidebarToggle"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search Input-->
@@ -157,38 +155,45 @@ require_once('../php/app/helpers.php');
                         </div>
                     </div>
                 </header>
-
-                <div id="carouselExampleControls" class="container carousel slide" data-ride="carousel" style="margin-top: -3rem;">
-
-<div class="carousel-inner">
-    <div class="carousel-item active">
-        <img class="d-block w-100" src="https://unsplash.it/g/700/450" alt="First slide">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. At placeat dolore obcaecati perspiciatis neque in, iusto, quia aut molestias minus ipsam modi dolorem odit eos.</p>
-    </div>
-    <div class="carousel-item">
-        <img class="d-block w-100" src="https://picsum.photos/700/450" alt="Second slide">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. At placeat dolore obcaecati perspiciatis neque in, iusto, quia aut molestias minus ipsam modi dolorem odit eos.</p>
-    </div>
-    <!-- <div class="carousel-item">
-        <img class="d-block w-100" src="..." alt="Third slide">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. At placeat dolore obcaecati perspiciatis neque in, iusto, quia aut molestias minus ipsam modi dolorem odit eos.</p>
-    </div> -->
-</div>
-<i data-feather="thumbs-up"></i>
-<i data-feather="thumbs-down"></i>
-<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-</a>
-<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-</a>
-</div>
-
+                <div class="container" style="margin-top: -3rem;">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card shadow-lg border-lg rounded-lg">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-8 position-relative">
+                                                <img class="w-100 border border-lg shadow" src="https://unsplash.it/g/700/450" alt="First slide">
+                                                <div class="position-absolute" style="bottom: 10px;">
+                                                    <span class="badge badge-teal ml-2 mr-1">#paisaje</span>
+                                                    <span class="badge badge-warning mx-1">#mar</span>
+                                                    <span class="badge badge-danger mx-1">#felicidad</span>
+                                                    <span class="badge badge-primary ml-1 mr-2">#FC Barcelona</span>
+                                                </div>
+                                            </div>
+                                            <div class="col d-flex align-content-between flex-wrap">
+                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis corrupti dolorum, ullam laborum tempore repellat labore sapiente nam cupiditate reprehenderit, vitae aperiam dolor voluptatum odio illo obcaecati, ab aliquid hic.</p>
+                                                <div class="text-center mx-auto">
+                                                    <i class="fas fa-star h3 text-warning"></i>
+                                                    <i class="far fa-star h3"></i>
+                                                    <i class="far fa-star h3"></i>
+                                                    <i class="far fa-star h3"></i>
+                                                    <i class="far fa-star h3"></i>
+                                                    <span class="d-block my-2">4 dislikes · 11 likes</span>
+                                                    <div>
+                                                        <i class="fas fa-heart-broken display-3 mr-1"></i>
+                                                        <i class="fas fa-heart display-3 ml-1"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
 
                 <!-- Main page content-->
-                <section class="container-fluid bg-cyan d-sm-block d-lg-none" style="padding: 0; position: fixed; width: 100%; bottom: 5rem;">
+                <!-- <section class="container-fluid bg-cyan d-sm-block d-lg-none" style="padding: 0; position: fixed; width: 100%; bottom: 5rem;">
                     <div class="row text-center">
                         <div class="col bg-primary py-5">
                             <i class="fas fa-home"></i>
@@ -200,7 +205,7 @@ require_once('../php/app/helpers.php');
                             <i class="fas fa-user"></i>
                         </div>
                     </div>
-                </section>
+                </section> -->
             </main>
             <footer class="footer mt-auto footer-light">
                 <div class="container-fluid">

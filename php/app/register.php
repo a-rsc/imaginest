@@ -8,6 +8,7 @@ $data['lastname']           = filter_input(INPUT_POST, 'lastname');
 $data['email']              = filter_input(INPUT_POST, 'email');
 $data['password']           = filter_input(INPUT_POST, 'password');
 $data['confirmPassword']    = filter_input(INPUT_POST, 'confirmPassword');
+$data['termsAndConditions']    = filter_input(INPUT_POST, 'termsAndConditions');
 
 // username
 if (!(
@@ -76,6 +77,12 @@ else if (empty($data['password']))
     $errors['password'][] = VALIDATION['password']['required']['msg'];
 }
 
+// termsAndConditions
+if (empty($data['termsAndConditions']))
+{
+    $errors['termsAndConditions'][] = VALIDATION['termsAndConditions']['required']['msg'];
+}
+
 if (empty($errors))
 {
     try
@@ -90,7 +97,7 @@ if (empty($errors))
             // Insert sql
             // Durante el proceso de registro del usuario se genera un aleatorio que se utiliza en la activación de la cuenta.
             $data['activationCode'] = hash('sha256', random_int(1, 1000));
-            $sql = "INSERT INTO users (username, email, firstname, lastname, password, activationCode) VALUES(?, ?, ?, ?, ?, ?)";
+            $sql = 'INSERT INTO users (username, email, firstname, lastname, password, activationCode) VALUES(?, ?, ?, ?, ?, ?)';
 
             $insert = $db->prepare($sql);
             $insert->execute(array($data['username'], $data['email'], $data['firstname'], $data['lastname'], password_hash($data['password'], PASSWORD_DEFAULT), $data['activationCode']));

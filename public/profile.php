@@ -8,11 +8,9 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-require_once('../php/config/env.php');
-require_once('../php/bbdd/connecta_db_persistent.php');
-require_once('../php/app/helpers.php');
+require_once(dirname(__DIR__, 1) . '/php/config/env.php');
 
-require_once('../php/config/validation.php');
+require_once(dirname(__DIR__, 1) . '/php/config/validation.php');
 
 if($_SERVER['REQUEST_METHOD'] === 'POST')
 {
@@ -24,7 +22,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
         (sizeof($_POST) === 3 && isset($_POST['username']) && isset($_POST['lastname']) && isset($_POST['email'])) ||
         (sizeof($_POST) === 4 && isset($_POST['username']) && isset($_POST['firstname']) && isset($_POST['lastname']) && isset($_POST['email'])))
     {
-        require_once('../php/app/accountProfile.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/accountProfile.php');
     }
     else {
         // El formulario ha sido modificado por el usuario.
@@ -53,7 +51,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
         <!-- * * Tip * * You can use text or an image for your navbar brand.-->
         <!-- * * * * * * When using an image, we recommend the SVG format.-->
         <!-- * * * * * * Dimensions: Maximum height: 32px, maximum width: 240px-->
-        <a class="navbar-brand text-center" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><i class="fas fa-globe"></i> <?php echo CONFIG['APP_NAME']; ?></a>
+        <a class="navbar-brand text-primary" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><i class="fas fa-globe"></i> <?php echo CONFIG['APP_NAME']; ?></a>
         <!-- Sidenav Toggle Button-->
         <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 mr-lg-2 d-sm-none d-lg-block" id="sidebarToggle"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search Input-->

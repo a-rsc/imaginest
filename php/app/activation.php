@@ -16,7 +16,7 @@ try
     if (!empty($user) && $user['iduser'] != 0)
     {
         // Update sql
-        $sql = "UPDATE users SET active = 1, activationCode = NULL, activationDate = now() WHERE iduser = ?";
+        $sql = 'UPDATE users SET active = 1, activationCode = NULL, activationDate = now() WHERE iduser = ?';
         $update = $db->prepare($sql);
         $update->execute(array($user['iduser']));
 

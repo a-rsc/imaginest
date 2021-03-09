@@ -36,7 +36,7 @@ try{
     require_once('../php/email/forgotPasswordHTML.php');
 
     // Body: Establece el cuerpo del mensaje.Puede ser texto simple o con formato HTMl. Si es con formato HTMl hay que ejecutar el metodo IsHTML(True)
-    $mail->Body = sprintf($body, CONFIG['URL'], $data['resetPasswordCode'], $user['email'], CONFIG['URL'], CONFIG['URL'], CONFIG['URL']);
+    $mail->Body = sprintf($body, CONFIG['URL'], $data['resetPasswordCode'], $user['email'], CONFIG['APP_NAME'], CONFIG['URL'] . CONFIG['APP_IMAGE'], CONFIG['URL'], CONFIG['URL']);
 
     // AltBody: Establece el cuerpo del mensaje como solo de texto
     // $mail->AltBody = "This paragraph is not bold.\n\nThis text is not italic.";

@@ -84,6 +84,11 @@ define('VALIDATION', array(
             'msg' => "Password is not the correct length!",
         ),
     ),
+    'termsAndConditions' => array(
+        'required' => array(
+            'msg' => "Accept the Terms & Conditions is required!",
+        ),
+    ),
     'image' => array(
         'errorType' =>array(
             'msg' => "Image type is incorrect!",

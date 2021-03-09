@@ -1,21 +1,19 @@
 <?php
 
-require_once('../config/env.php');
-require_once('./connecta_db_persistent.php');
-require_once('../app/helpers.php');
+require_once(dirname(__DIR__, 1) . '.\config\env.php');
 
-require_once('./bbdd.php');
+require_once(__DIR__ . '.\bbdd.php');
 
 try{
 
-    // $sql = "INSERT INTO users (username, email, firstname, lastname, password) VALUES('alvaro', 'a_rsc@hotmail.com', 'Álvaro', 'Rodríguez', ?)";
+    $sql = 'INSERT INTO users (username, email, firstname, lastname, password, active) VALUES ("alvaro", "a_rsc@hotmail.com", "Álvaro", "Rodríguez", ?, 1), ("david", "david@hotmail.com", "David", "Rodríguez", ?, 1), ("oscar", "oscar@hotmail.com", "Óscar", "Rodríguez", ?, 1), ("benito", "benito@hotmail.com", "Benito", "Rodríguez", ?, 1), ("mariona", "mariona@hotmail.com", "Mariona", "Rodríguez", ?, 1), ("inmanol", "inmanol@hotmail.com", "Inmanol", "", ?, 1), ("carlos", "carlos@hotmail.com", "Carlos", "Gilete", ?, 1), ("raul", "raul@hotmail.com", "Raul", "Bellido", ?, 1)';
 
-    // $insert = $db->prepare($sql);
-    // $insert->execute(array(helper_password_hash('sahara')));
+    $insert = $db->prepare($sql);
+    $insert->execute(array(helper_password_hash('sahara'), helper_password_hash('sahara'), helper_password_hash('sahara'), helper_password_hash('sahara'), helper_password_hash('sahara'), helper_password_hash('sahara'), helper_password_hash('sahara'), helper_password_hash('sahara')));
 
-    // if(!$insert){
-    //     print_r( $db->errorinfo());
-    // }
+    if(!$insert){
+        print_r( $db->errorinfo());
+    }
 
 }catch(PDOException $e){
     echo 'Error amb la BDs: ' . $e->getMessage();

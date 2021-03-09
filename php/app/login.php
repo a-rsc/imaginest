@@ -49,7 +49,7 @@ if (empty($errors))
                 if (password_verify($data['password'], $user['password']))
                 {
                     // Update sql
-                    $sql = "UPDATE users SET openSession = ?, lastLogin = now() WHERE iduser = ?";
+                    $sql = 'UPDATE users SET openSession = ?, lastLogin = now() WHERE iduser = ?';
                     $update = $db->prepare($sql);
                     $update->execute(array((boolean) $data['openSession'], $user['iduser']));
 
@@ -80,7 +80,7 @@ if (empty($errors))
                 // Update sql
                 // Si el usuario ha perdido el código de activación, cuando intenta logearse si no está activo se vuelve a enviar otro código
                 $data['activationCode'] = hash('sha256', random_int(1, 1000));
-                $sql = "UPDATE users SET openSession = ?, activationCode = ? WHERE iduser = ?";
+                $sql = 'UPDATE users SET openSession = ?, activationCode = ? WHERE iduser = ?';
                 $update = $db->prepare($sql);
                 $update->execute(array((boolean) $data['openSession'], $data['activationCode'], $user['iduser']));
 
