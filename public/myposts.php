@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         <!-- * * * * * * Dimensions: Maximum height: 32px, maximum width: 240px-->
         <a class="navbar-brand text-primary" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><i class="fas fa-globe"></i> <?php echo CONFIG['APP_NAME']; ?></a>
         <!-- Sidenav Toggle Button-->
-        <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 mr-lg-2 d-sm-none d-lg-block" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+        <button class="btn btn-icon btn-transparent-dark mr-lg-2 d-lg-block" id="sidebarToggle"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search Input-->
         <!-- * * Note: * * Visible only on and above the md breakpoint-->
         <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="form-inline mr-auto d-none d-md-block mr-3">
@@ -159,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                 <div class="col-auto mt-4">
                                     <h1 class="page-header-title">
                                     <div class="page-header-icon"><i class="far fa-images"></i></div>
-                                        Your posts!
+                                        My posts!
                                     </h1>
                                     <div class="page-header-subtitle">Be inspired by <?php echo CONFIG['APP_NAME']; ?></div>
                                 </div>
@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                 <div class="container-fluid conten" style="margin-top: 3rem;">
                     <div class="px-lg-5">
                         <div class="row">
-                        
+
                         <?php
                         /*
                             $sql = "SELECT users_iduser, description, name FROM images WHERE users_iduser = ?";
@@ -194,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                             echo '</div>';
                                         echo '</div>';
                                 }
-                            
+
                             }else
                             {
                                 echo '<div class="col-xl-12 col-lg-12 col-md-12 mb-4"></div>';
@@ -213,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             <div class="gallerybody">
                     <div id="top"></div>
                     <section class="gallery">
-                        
+
                         <?php
                             $sql = "SELECT users_iduser, description, name FROM images WHERE users_iduser = ?";
                             $query = $db->prepare($sql);
@@ -234,7 +234,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                                 echo "<a class=\"image fancybox\" href=\"#$item[$i]\">";
                                                     echo "<img src=\"./uploads/{$image['name']}\" alt=\"\" class=\"zoom\">";
                                                 echo '</a>';
-                                            echo "</li>";    
+                                            echo "</li>";
                                             $i++;
                                         }
 
@@ -267,7 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                             }
 
                         ?>
-                        
+
                     </section>
                 </div>
                 <!-- Main page content-->

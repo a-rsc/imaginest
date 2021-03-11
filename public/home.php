@@ -34,7 +34,7 @@ require_once(dirname(__DIR__, 1) . '/php/config/env.php');
         <!-- * * * * * * Dimensions: Maximum height: 32px, maximum width: 240px-->
         <a class="navbar-brand text-primary" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><i class="fas fa-globe"></i> <?php echo CONFIG['APP_NAME']; ?></a>
         <!-- Sidenav Toggle Button-->
-        <button class="btn btn-icon btn-transparent-dark order-1 order-lg-0 mr-lg-2 d-sm-none d-lg-block" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+        <button class="btn btn-icon btn-transparent-dark mr-lg-2 d-lg-block" id="sidebarToggle"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search Input-->
         <!-- * * Note: * * Visible only on and above the md breakpoint-->
         <form class="form-inline mr-auto d-none d-md-block mr-3">
@@ -161,7 +161,7 @@ require_once(dirname(__DIR__, 1) . '/php/config/env.php');
                             <div class="card shadow-lg border-lg rounded-lg">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-8 position-relative">
+                                            <div class="col-lg-8 position-relative">
                                                 <img class="w-100 border border-lg shadow" src="https://unsplash.it/g/700/450" alt="First slide">
                                                 <div class="position-absolute" style="bottom: 10px;">
                                                     <span class="badge badge-teal ml-2 mr-1">#paisaje</span>
@@ -170,7 +170,7 @@ require_once(dirname(__DIR__, 1) . '/php/config/env.php');
                                                     <span class="badge badge-primary ml-1 mr-2">#FC Barcelona</span>
                                                 </div>
                                             </div>
-                                            <div class="col d-flex align-content-between flex-wrap">
+                                            <div class="col d-flex align-content-between flex-wrap mt-2 mt-lg-0">
                                                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis corrupti dolorum, ullam laborum tempore repellat labore sapiente nam cupiditate reprehenderit, vitae aperiam dolor voluptatum odio illo obcaecati, ab aliquid hic.</p>
                                                 <div class="text-center mx-auto">
                                                     <i class="fas fa-star h3 text-warning"></i>
