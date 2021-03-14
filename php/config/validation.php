@@ -6,14 +6,19 @@ define('VALIDATION', array(
             'msg' => "The fields are wrong!",
         ),
     ),
-    'accountDeleted' => array(
-        'error' => array(
-            'msg' => "The account has been deleted!",
-        ),
-    ),
     'noRegister' => array(
         'unique' => array(
             'msg' => "Username and/or email have already been registered!",
+        ),
+    ),
+    'noProfile' => array(
+        'error' => array(
+            'msg' => "Username and/or email have already been registered!",
+        ),
+    ),
+    'accountDeleted' => array(
+        'error' => array(
+            'msg' => "The account has been deleted!",
         ),
     ),
     'username' => array(

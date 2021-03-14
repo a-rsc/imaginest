@@ -67,11 +67,9 @@ try{
       `users_iduser` INT NOT NULL,
       `description` VARCHAR(255) NULL,
       `publicationDate` DATETIME NULL,
-      `likes` INT NOT NULL DEFAULT 0,
-      `dislikes` INT NOT NULL DEFAULT 0,
-      `average` DECIMAL NOT NULL DEFAULT 0,
+      `average` FLOAT NOT NULL DEFAULT 0,
       `name` CHAR(64) NOT NULL,
-      PRIMARY KEY (`idimages`),
+      PRIMARY KEY (`idimages`, `users_iduser`),
       INDEX `fk_images_users_idx` (`users_iduser` ASC) ,
       CONSTRAINT `fk_images_users`
         FOREIGN KEY (`users_iduser`)
@@ -89,8 +87,7 @@ try{
     CREATE TABLE IF NOT EXISTS `imaginest`.`images_has_users` (
       `images_idimages` INT NOT NULL,
       `users_iduser` INT NOT NULL,
-      `like` TINYINT NOT NULL DEFAULT 0,
-      `dislike` TINYINT NOT NULL DEFAULT 0,
+      `vote` ENUM('like', 'dislike') NOT NULL DEFAULT 'like',
       PRIMARY KEY (`images_idimages`, `users_iduser`),
       INDEX `fk_images_has_users_users1_idx` (`users_iduser` ASC) ,
       INDEX `fk_images_has_users_images1_idx` (`images_idimages` ASC) ,
@@ -145,7 +142,7 @@ try{
     SET SQL_MODE=@OLD_SQL_MODE;
     SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
     SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-    ";
+          ";
 
     $bbdd_script = $db->query($bbdd_script);
     $bbdd_script->fetchAll(PDO::FETCH_ASSOC);

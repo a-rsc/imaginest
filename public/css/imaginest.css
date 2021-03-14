@@ -38,6 +38,10 @@ form p.errors {
     color: red;
 }
 
+.vote:active, .vote:hover, .vote:link {
+    color: #e81500;
+}
+
 #layoutPrivacyTerms h2 {
     font-size: 0.95rem;
     text-align: justify;
@@ -64,4 +68,3 @@ form p.errors {
     color: black;
     opacity: 0.75;
 }
-

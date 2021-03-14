@@ -13,6 +13,7 @@ define('CONFIG', array(
     'BBDD_PASSWORD' => '',
 ));
 
+require_once(__DIR__ . '.\constants.php');
 require_once(__DIR__ . '.\email.php');
 require_once(dirname(__DIR__, 1) . '.\bbdd\connecta_db_persistent.php');
 require_once(dirname(__DIR__, 1) . '.\app\helpers.php');

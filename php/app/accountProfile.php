@@ -62,15 +62,29 @@ if (empty($errors))
 {
     try
     {
-        // Update sql
-        $sql = 'UPDATE users SET username = ?, firstname = ?, lastname = ?, email = ? WHERE iduser = ?';
-        $update = $db->prepare($sql);
-        $update->execute(array($data['username'], $data['firstname'], $data['lastname'], $data['email'], $_SESSION['user']['iduser']));
+        // Se debe verificar que el username/email no existen en la BDs, si existieran se debería informar al usuario.
+        $sql = 'SELECT count(*) AS existe FROM users WHERE (username = ? || email = ?) AND iduser != ? LIMIT 1';
+        $query = $db->prepare($sql);
+        $query->execute(array($data['username'], $data['email'], $_SESSION['user']['iduser']));
 
-        $_SESSION['user']['username'] = $data['username'];
-        $_SESSION['user']['firstname'] = $data['firstname'];
-        $_SESSION['user']['firstname'] = $data['firstname'];
-        $_SESSION['user']['email'] = $data['email'];
+        $result = $query->fetch(\PDO::FETCH_ASSOC);
+
+        if ($result['existe'] == 0)
+        {
+            // Update sql
+            $sql = 'UPDATE users SET username = ?, firstname = ?, lastname = ?, email = ? WHERE iduser = ?';
+            $update = $db->prepare($sql);
+            $update->execute(array($data['username'], $data['firstname'], $data['lastname'], $data['email'], $_SESSION['user']['iduser']));
+
+            $_SESSION['user']['username'] = $data['username'];
+            $_SESSION['user']['firstname'] = $data['firstname'];
+            $_SESSION['user']['firstname'] = $data['firstname'];
+            $_SESSION['user']['email'] = $data['email'];
+        }
+        else
+        {
+            $errors['noProfile'][] = VALIDATION['noProfile']['error']['msg'];
+        }
     }
     catch (PDOException $e)
     {

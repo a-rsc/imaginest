@@ -81,12 +81,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             </li>
             <!-- User Dropdown-->
             <li class="nav-item dropdown no-caret mr-3 mr-lg-0 dropdown-user">
-                <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" src="assets/img/illustrations/profiles/profile-2.png" /></a>
+                <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" src="assets/img/illustrations/profiles/profile-2.png" title="<?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?>"></a>
                 <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
                     <h6 class="dropdown-header d-flex align-items-center">
-                        <img class="dropdown-user-img" src="assets/img/illustrations/profiles/profile-2.png" />
+                        <img class="dropdown-user-img" src="assets/img/illustrations/profiles/profile-2.png" title="<?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?>">
                         <div class="dropdown-user-details">
-                            <div class="dropdown-user-details-name"><?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?></div>
+                            <div class="dropdown-user-details-name text-primary"><?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?></div>
                             <div class="dropdown-user-details-email"><?php echo $_SESSION['user']['email'] ?></div>
                         </div>
                     </h6>
@@ -148,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                 <div class="sidenav-footer">
                     <div class="sidenav-footer-content">
                         <div class="sidenav-footer-subtitle">Logged in as:</div>
-                        <div class="sidenav-footer-title"><?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?></div>
+                        <div class="sidenav-footer-title text-primary"><?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?></div>
                     </div>
                 </div>
             </nav>
@@ -163,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                 <div class="col-auto mt-4">
                                     <h1 class="page-header-title">
                                     <div class="page-header-icon"><i class="fas fa-camera-retro"></i></div>
-                                        Upload a post to <?php echo CONFIG['APP_NAME']; ?>!
+                                        Upload a post!
                                     </h1>
                                     <div class="page-header-subtitle">Be inspired by <?php echo CONFIG['APP_NAME']; ?></div>
                                 </div>
@@ -188,20 +188,17 @@ heredoc;
     echo "<img class=\"w-100 border border-lg shadow\" src=\"uploads/{$data['name']}\" alt=\"First slide\">";
     echo "<div class=\"position-absolute\" style=\"bottom: 10px;\">";
 
-    $colours = array('blue', 'indigo', 'purple', 'pink', 'red', 'orange', 'yellow', 'green', 'teal', 'cyan', 'white', 'gray', 'primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark', 'black');
-
-    // $colours = array('Pink', 'LightPink', 'HotPink', 'DeepPink', 'PaleVioletRed', 'MediumVioletRed', 'Lavender', 'Thistle', 'Plum', 'Orchid', 'Violet', 'Fuchsia', 'Magenta', 'MediumOrchid', 'DarkOrchid', 'DarkViolet', 'BlueViolet', 'DarkMagenta', 'Purple', 'MediumPurple', 'MediumSlateBlue', 'SlateBlue', 'DarkSlateBlue', 'RebeccaPurple', 'Indigo', 'LightSalmon', 'Salmon', 'DarkSalmon', 'LightCoral', 'IndianRed', 'Crimson', 'Red', 'FireBrick', 'DarkRed', 'Orange', 'DarkOrange', 'Coral', 'Tomato', 'OrangeRed', 'Gold', 'Yellow', 'LightYellow', 'LemonChiffon', 'LightGoldenRodYellow', 'PapayaWhip', 'Moccasin', 'PeachPuff', 'PaleGoldenRod', 'Khaki', 'DarkKhaki', 'GreenYellow', 'Chartreuse', 'LawnGreen', 'Lime', 'LimeGreen', 'PaleGreen', 'LightGreen', 'MediumSpringGreen', 'SpringGreen', 'MediumSeaGreen', 'SeaGreen', 'ForestGreen', 'Green', 'DarkGreen', 'YellowGreen', 'OliveDrab', 'DarkOliveGreen', 'MediumAquaMarine', 'DarkSeaGreen', 'LightSeaGreen', 'DarkCyan', 'Teal', 'Aqua', 'Cyan', 'LightCyan', 'PaleTurquoise', 'Aquamarine', 'Turquoise', 'MediumTurquoise', 'DarkTurquoise', 'CadetBlue', 'SteelBlue', 'LightSteelBlue', 'LightBlue', 'PowderBlue', 'LightSkyBlue', 'SkyBlue', 'CornflowerBlue', 'DeepSkyBlue', 'DodgerBlue', 'RoyalBlue', 'Blue', 'MediumBlue', 'DarkBlue', 'Navy', 'MidnightBlue', 'Cornsilk', 'BlanchedAlmond', 'Bisque', 'NavajoWhite', 'Wheat', 'BurlyWood', 'Tan', 'RosyBrown', 'SandyBrown', 'GoldenRod', 'DarkGoldenRod', 'Peru', 'Chocolate', 'Olive', 'SaddleBrown', 'Sienna', 'Brown', 'Maroon', 'White', 'Snow', 'HoneyDew', 'MintCream', 'Azure', 'AliceBlue', 'GhostWhite', 'WhiteSmoke', 'SeaShell', 'Beige', 'OldLace', 'FloralWhite', 'Ivory', 'AntiqueWhite', 'Linen', 'LavenderBlush', 'MistyRose', 'Gainsboro', 'LightGray', 'Silver', 'DarkGray', 'DimGray', 'Gray', 'LightSlateGray', 'SlateGray', 'DarkSlateGray', 'Black');
-
     // La variable no puede llamarse hashtag por que se mantiene la referencia anterior...
     foreach ($hashtags[0] as $ht) {
-        echo "<span class=\"badge badge-pill badge-{$colours[array_rand($colours, 1)]} mx-3\">#{$ht}</span>";
+        echo "<span class=\"badge badge-pill badge-" . COLOURS[array_rand(COLOURS, 1)] . " mx-3\">#{$ht}</span>";
     }
 
     echo <<< heredoc
                                             </div>
                                         </div>
-                                        <div class="col d-flex align-content-between flex-wrap">
+                                        <div class="col d-flex align-content-between flex-wrap mt-2 mt-lg-0">
                                             <p>{$data['description']}</p>
+                                            <a href="{$_SERVER['PHP_SELF']}" class="btn btn-primary btn-block" title="Upload another post">Upload another post</a>
                                         </div>
                                     </div>
 heredoc;
@@ -236,7 +233,8 @@ heredoc;
                 <label class="small mb-1" for="image">Description</label>
     heredoc;
 
-    echo "<textarea name=\"description\" maxlength=\"" . VALIDATION['description']['length']['max'] . "\" rows=\"6\" cols=\"80\" placeholder=\"Enter a comment for the photo\" class=\"form-control\"></textarea>";
+    echo "<textarea class=\"form-control\" name=\"description\" maxlength=\"" . VALIDATION['description']['length']['max'] . "\" rows=\"6\" cols=\"80\" aria-describedby=\"descriptionHelp\" placeholder=\"Enter a comment for the photo\"></textarea>";
+    echo "<small id=\"emaidescriptionHelplHelp\" class=\"form-text text-muted\">Hashtags must be written with #.</small>";
 
     echo <<< heredoc
             </div>
@@ -263,12 +261,26 @@ heredoc;
                         </div>
                     </div>
                 </div>
+                <!-- Main page content-->
+                <section class="container-fluid position-fixed p-0 d-sm-block d-lg-none" style="bottom: 5rem;">
+                    <div class="row text-center shadow-lg border-lg rounded-lg">
+                        <div class="col bg-white py-4">
+                            <a class="nav-link" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="Have fun"><i class="fas fa-home display-3"></i></a>
+                        </div>
+                        <div class="col bg-gradient-primary-to-secondary py-4">
+                        <a class="nav-link" href="<?php echo CONFIG['URL'] . "/upload.php"; ?>" title="Upload a post"><i class="text-white fas fa-camera display-3"></i></a>
+                        </div>
+                        <div class="col bg-white py-4">
+                        <a class="nav-link" href="<?php echo CONFIG['URL'] . "/profile.php"; ?>" title="Profile"><i class="fas fa-user display-3"></i></a>
+                        </div>
+                    </div>
+                </section>
             </main>
-            <footer class="footer mt-auto footer-light">
+            <footer class="footer mt-auto footer-light text-primary">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-6 small">All rights reserved &copy; <a href="<?php echo CONFIG['URL'] . "/index.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><?php echo CONFIG['APP_NAME']; ?></a> &middot; <?php echo date("Y"); ?></div>
-                        <div class="col-md-6 text-md-right small">
+                        <div class="col-md-6 small text-center text-md-left">All rights reserved &copy; <a href="<?php echo CONFIG['URL'] . "/index.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><?php echo CONFIG['APP_NAME']; ?></a> &middot; <?php echo date("Y"); ?></div>
+                        <div class="col-md-6 small text-center text-md-right">
                             <a href="<?php echo CONFIG['URL'] . "/privacy.php"; ?>" title="Privacy Policy">Privacy Policy</a>
                             &middot;
                             <a href="<?php echo CONFIG['URL'] . "/terms.php"; ?>" title="Terms & Conditions">Terms &amp; Conditions</a>

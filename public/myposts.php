@@ -77,12 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             </li>
             <!-- User Dropdown-->
             <li class="nav-item dropdown no-caret mr-3 mr-lg-0 dropdown-user">
-                <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" src="assets/img/illustrations/profiles/profile-2.png" /></a>
+                <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" src="assets/img/illustrations/profiles/profile-2.png" title="<?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?>"></a>
                 <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
                     <h6 class="dropdown-header d-flex align-items-center">
-                        <img class="dropdown-user-img" src="assets/img/illustrations/profiles/profile-2.png" />
+                        <img class="dropdown-user-img" src="assets/img/illustrations/profiles/profile-2.png" title="<?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?>">
                         <div class="dropdown-user-details">
-                            <div class="dropdown-user-details-name"><?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?></div>
+                            <div class="dropdown-user-details-name text-primary"><?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?></div>
                             <div class="dropdown-user-details-email"><?php echo $_SESSION['user']['email'] ?></div>
                         </div>
                     </h6>
@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                 <div class="sidenav-footer">
                     <div class="sidenav-footer-content">
                         <div class="sidenav-footer-subtitle">Logged in as:</div>
-                        <div class="sidenav-footer-title"><?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?></div>
+                        <div class="sidenav-footer-title text-primary"><?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?></div>
                     </div>
                 </div>
             </nav>
@@ -271,25 +271,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                     </section>
                 </div>
                 <!-- Main page content-->
-                <section class="container-fluid bg-cyan d-sm-block d-lg-none" style="padding: 0; position: fixed; width: 100%; bottom: 5rem;">
-                    <div class="row text-center">
-                        <div class="col bg-primary py-5">
-                            <i class="fas fa-home"></i>
+                <section class="container-fluid position-fixed p-0 d-sm-block d-lg-none" style="bottom: 5rem;">
+                    <div class="row text-center shadow-lg border-lg rounded-lg">
+                        <div class="col bg-white py-4">
+                            <a class="nav-link" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="Have fun"><i class="text-primary fas fa-home display-3"></i></a>
                         </div>
-                        <div class="col bg-danger py-5">
-                            <i class="fas fa-camera"></i>
+                        <div class="col bg-gradient-primary-to-secondary py-4">
+                        <a class="nav-link" href="<?php echo CONFIG['URL'] . "/upload.php"; ?>" title="Upload a post"><i class="text-white fas fa-camera display-3"></i></a>
                         </div>
-                        <div class="col bg-teal py-5">
-                            <i class="fas fa-user"></i>
+                        <div class="col bg-white py-4">
+                        <a class="nav-link" href="<?php echo CONFIG['URL'] . "/profile.php"; ?>" title="Profile"><i class="text-primary fas fa-user display-3"></i></a>
                         </div>
                     </div>
                 </section>
             </main>
-            <footer class="footer mt-auto footer-light">
+            <footer class="footer mt-auto footer-light text-primary">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-6 small">All rights reserved &copy; <a href="<?php echo CONFIG['URL'] . "/index.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><?php echo CONFIG['APP_NAME']; ?></a> &middot; <?php echo date("Y"); ?></div>
-                        <div class="col-md-6 text-md-right small">
+                        <div class="col-md-6 small text-center text-md-left">All rights reserved &copy; <a href="<?php echo CONFIG['URL'] . "/index.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><?php echo CONFIG['APP_NAME']; ?></a> &middot; <?php echo date("Y"); ?></div>
+                        <div class="col-md-6 small text-center text-md-right">
                             <a href="<?php echo CONFIG['URL'] . "/privacy.php"; ?>" title="Privacy Policy">Privacy Policy</a>
                             &middot;
                             <a href="<?php echo CONFIG['URL'] . "/terms.php"; ?>" title="Terms & Conditions">Terms &amp; Conditions</a>

@@ -10,6 +10,20 @@ if (!isset($_SESSION['user'])) {
 
 require_once(dirname(__DIR__, 1) . '/php/config/env.php');
 
+require_once(dirname(__DIR__, 1) . '/php/config/validation.php');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
+{
+    $errors = array();
+
+    if (sizeof($_POST) === 2 && isset($_POST['image']) && isset($_POST['vote']))
+    {
+        require_once(dirname(__DIR__, 1) . '/php/app/vote.php');
+    }
+}
+
+require_once(dirname(__DIR__, 1) . '/php/app/home.php');
+
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo CONFIG['APP_LOCALE']; ?>">
@@ -65,12 +79,12 @@ require_once(dirname(__DIR__, 1) . '/php/config/env.php');
             </li>
             <!-- User Dropdown-->
             <li class="nav-item dropdown no-caret mr-3 mr-lg-0 dropdown-user">
-                <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" src="assets/img/illustrations/profiles/profile-2.png" /></a>
+                <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-fluid" src="assets/img/illustrations/profiles/profile-2.png" title="<?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?>"></a>
                 <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--fade-in-up" aria-labelledby="navbarDropdownUserImage">
                     <h6 class="dropdown-header d-flex align-items-center">
-                        <img class="dropdown-user-img" src="assets/img/illustrations/profiles/profile-2.png" />
+                        <img class="dropdown-user-img" src="assets/img/illustrations/profiles/profile-2.png" title="<?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?>">
                         <div class="dropdown-user-details">
-                            <div class="dropdown-user-details-name"><?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?></div>
+                            <div class="dropdown-user-details-name text-primary"><?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?></div>
                             <div class="dropdown-user-details-email"><?php echo $_SESSION['user']['email'] ?></div>
                         </div>
                     </h6>
@@ -132,7 +146,7 @@ require_once(dirname(__DIR__, 1) . '/php/config/env.php');
                 <div class="sidenav-footer">
                     <div class="sidenav-footer-content">
                         <div class="sidenav-footer-subtitle">Logged in as:</div>
-                        <div class="sidenav-footer-title"><?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?></div>
+                        <div class="sidenav-footer-title text-primary"><?php echo $_SESSION['user']['firstname'] ?? $_SESSION['user']['username'] ?></div>
                     </div>
                 </div>
             </nav>
@@ -159,59 +173,77 @@ require_once(dirname(__DIR__, 1) . '/php/config/env.php');
                     <div class="row">
                         <div class="col">
                             <div class="card shadow-lg border-lg rounded-lg">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-lg-8 position-relative">
-                                                <img class="w-100 border border-lg shadow" src="https://unsplash.it/g/700/450" alt="First slide">
-                                                <div class="position-absolute" style="bottom: 10px;">
-                                                    <span class="badge badge-teal ml-2 mr-1">#paisaje</span>
-                                                    <span class="badge badge-warning mx-1">#mar</span>
-                                                    <span class="badge badge-danger mx-1">#felicidad</span>
-                                                    <span class="badge badge-primary ml-1 mr-2">#FC Barcelona</span>
-                                                </div>
-                                            </div>
-                                            <div class="col d-flex align-content-between flex-wrap mt-2 mt-lg-0">
-                                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis corrupti dolorum, ullam laborum tempore repellat labore sapiente nam cupiditate reprehenderit, vitae aperiam dolor voluptatum odio illo obcaecati, ab aliquid hic.</p>
-                                                <div class="text-center mx-auto">
-                                                    <i class="fas fa-star h3 text-warning"></i>
-                                                    <i class="far fa-star h3"></i>
-                                                    <i class="far fa-star h3"></i>
-                                                    <i class="far fa-star h3"></i>
-                                                    <i class="far fa-star h3"></i>
-                                                    <span class="d-block my-2">4 dislikes · 11 likes</span>
-                                                    <div>
-                                                        <i class="fas fa-heart-broken display-3 mr-1"></i>
-                                                        <i class="fas fa-heart display-3 ml-1"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <?php
+
+                                            if (!empty($havefun['idimages']))
+                                            {
+                                                echo "<div class=\"col-lg-8 position-relative\">";
+                                                echo "<img class=\"img-fluid border border-lg shadow\" src=\"uploads/{$havefun['name']}\" alt=\"Have fun\">";
+                                                echo "<div class=\"position-absolute\" style=\"bottom: 10px;\">";
+
+                                                foreach ($havefun['hashtags'] as $ht) {
+                                                    echo "<span class=\"badge badge-pill badge-" . COLOURS[array_rand(COLOURS, 1)] . " mx-3\">#{$ht}</span>";
+                                                }
+
+                                                echo "</div>";
+                                                echo "</div>";
+                                                echo "<div class=\"col d-flex align-content-between flex-wrap mt-2 mt-lg-0\">";
+                                                echo "<div class=\"w-100\"><p>Uploaded by: <span class=\"text-red\">{$havefun['username']}</span> · <span class=\"text-primary\">{$havefun['publicationDate']}</span></p><p>{$havefun['description']}</p></div>";
+                                                echo "<div class=\"text-center mx-auto\">";
+
+                                                for ($i=0; $i < 5; $i++) {
+                                                    if ($i/5 < $havefun['average']) {
+                                                        echo "<i class=\"mx-1 fas fa-heart h3 text-red\"></i>";
+                                                    } else {
+                                                        echo "<i class=\"mx-1 fas fa-heart h3\"></i>";
+                                                    }
+                                                }
+
+                                                echo "<span class=\"d-block my-2\">{$havefun['likes']} likes · {$havefun['dislikes']} dislikes</span>";
+                                                echo "<div>";
+                                                echo "<form method=\"post\" action=\"" . htmlspecialchars($_SERVER['PHP_SELF']) . "\">";
+                                                echo "<input type=\"hidden\" name=\"image\" value=\"{$havefun['idimages']}\">";
+                                                echo "<input type=\"radio\" id=\"like\" name=\"vote\" value=\"like\" style=\"display: none;\">";
+                                                echo "<label for=\"like\"><i class=\"vote fas fa-heart-broken display-3 mr-1\"></i></label>";
+                                                echo "<input type=\"radio\" id=\"dislike\" name=\"vote\" value=\"dislike\" style=\"display: none;\">";
+                                                echo "<label for=\"dislike\"><i class=\"vote fas fa-heart display-3 ml-1\"></i></label>";
+                                                echo "</form></div></div></div>";
+                                            }
+                                            else
+                                            {
+                                                echo "<div class=\"col-lg-8\">";
+                                                echo "<p>There are no more images to vote!</p>";
+                                                echo "</div>";
+                                            }
+                                        ?>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </div>
                 </div>
-
                 <!-- Main page content-->
-                <!-- <section class="container-fluid bg-cyan d-sm-block d-lg-none" style="padding: 0; position: fixed; width: 100%; bottom: 5rem;">
-                    <div class="row text-center">
-                        <div class="col bg-primary py-5">
-                            <i class="fas fa-home"></i>
+                <section class="container-fluid position-fixed p-0 d-sm-block d-lg-none" style="bottom: 5rem;">
+                    <div class="row text-center shadow-lg border-lg rounded-lg">
+                        <div class="col bg-white py-4">
+                            <a class="nav-link" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="Have fun"><i class="fas fa-home display-3"></i></a>
                         </div>
-                        <div class="col bg-danger py-5">
-                            <i class="fas fa-camera"></i>
+                        <div class="col bg-gradient-primary-to-secondary py-4">
+                        <a class="nav-link" href="<?php echo CONFIG['URL'] . "/upload.php"; ?>" title="Upload a post"><i class="text-white fas fa-camera display-3"></i></a>
                         </div>
-                        <div class="col bg-teal py-5">
-                            <i class="fas fa-user"></i>
+                        <div class="col bg-white py-4">
+                        <a class="nav-link" href="<?php echo CONFIG['URL'] . "/profile.php"; ?>" title="Profile"><i class="fas fa-user display-3"></i></a>
                         </div>
                     </div>
-                </section> -->
+                </section>
             </main>
-            <footer class="footer mt-auto footer-light">
+            <footer class="footer mt-auto footer-light text-primary">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-6 small">All rights reserved &copy; <a href="<?php echo CONFIG['URL'] . "/index.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><?php echo CONFIG['APP_NAME']; ?></a> &middot; <?php echo date("Y"); ?></div>
-                        <div class="col-md-6 text-md-right small">
+                        <div class="col-md-6 small text-center text-md-left">All rights reserved &copy; <a href="<?php echo CONFIG['URL'] . "/index.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><?php echo CONFIG['APP_NAME']; ?></a> &middot; <?php echo date("Y"); ?></div>
+                        <div class="col-md-6 small text-center text-md-right">
                             <a href="<?php echo CONFIG['URL'] . "/privacy.php"; ?>" title="Privacy Policy">Privacy Policy</a>
                             &middot;
                             <a href="<?php echo CONFIG['URL'] . "/terms.php"; ?>" title="Terms & Conditions">Terms &amp; Conditions</a>
@@ -228,5 +260,12 @@ require_once(dirname(__DIR__, 1) . '/php/config/env.php');
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('input[name=vote]').change(function(){
+                    $('form').submit();
+            });
+        });
+    </script>
 </body>
 </html>
