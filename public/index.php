@@ -34,10 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 }
 else
 {
-    // toast
+    // alert
     if (sizeof($_GET) === 1 && isset($_GET['activationPending']))
     {
-        require_once(dirname(__DIR__, 1) . '/php/app/toast/activationPending.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/alert/activationPending.php');
     }
     else if (sizeof($_GET) === 2 && isset($_GET['activationCode']) && isset($_GET['email']))
     {
@@ -45,11 +45,15 @@ else
     }
     else if (sizeof($_GET) === 1 && isset($_GET['forgotPasswordPending']))
     {
-        require_once(dirname(__DIR__, 1) . '/php/app/toast/forgotPasswordPending.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/alert/forgotPasswordPending.php');
     }
     else if (sizeof($_GET) === 1 && isset($_GET['forgotPasswordSuccess']))
     {
-        require_once(dirname(__DIR__, 1) . '/php/app/toast/forgotPasswordSuccess.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/alert/forgotPasswordSuccess.php');
+    }
+    else if (sizeof($_GET) === 1 && isset($_GET['resetPasswordSuccess']))
+    {
+        require_once(dirname(__DIR__, 1) . '/php/app/alert/resetPasswordSuccess.php');
     }
 }
 
@@ -87,13 +91,13 @@ else
                             <div class="card shadow-lg border-lg border-primary rounded-lg mt-5">
                                 <div class="card-header justify-content-center"><h1 class="text-primary display-4 text-center my-2">Sign in</h1></div>
                                 <div class="card-body">
-                                    <?php echo $toast ?? NULL; ?>
+                                    <?php echo $alert ?? NULL; ?>
                                     <!-- Login form-->
                                     <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
                                         <!-- Form Group (username / email address)-->
                                         <div class="form-group">
                                             <label class="small mb-1" for="username">Username / email</label>
-                                            <input type="text" id="username" class="form-control" name="username" <?php echo "minlength='" . VALIDATION['username']['length']['min'] . "' maxlength='" . VALIDATION['username']['length']['max'] . "'"; ?> placeholder="Username / email" value="<?php if (!empty($data) && array_key_exists('login', $data)) echo $data['login']; else if (isset($_COOKIE['username'])) echo $_COOKIE['username']; else if (isset($_COOKIE['email'])) echo $_COOKIE['email'];?>" autocomplete="username" required autofocus>
+                                            <input type="text" id="username" class="form-control" name="username" <?php echo "minlength='" . VALIDATION['username']['length']['min'] . "' maxlength='" . VALIDATION['username']['length']['max'] . "'"; ?> placeholder="Username / email" value="<?php if (!empty($data) && array_key_exists('login', $data)) echo $data['login']; else if (isset($_COOKIE['username'])) echo $_COOKIE['username']; ?>" autocomplete="username" required autofocus>
                                             <?php if (!empty($errors) && array_key_exists('username', $errors)) echo "<p class='errors'>" . reset($errors['username']) . "</p>"; ?>
                                         </div>
                                         <!-- Form Group (password)-->

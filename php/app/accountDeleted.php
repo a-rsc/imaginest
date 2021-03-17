@@ -2,12 +2,16 @@
 
 try
 {
-    // Update sql
-    $sql = 'UPDATE users SET removedOn = now() WHERE iduser = ?';
-    $update = $db->prepare($sql);
-    $update->execute(array($_SESSION['user']['iduser']));
+    // Update
+    if (update_accountDeleted($_SESSION['user']['iduser']))
+    {
+        header('location: ../php/app/logout.php');
+    }
+    else
+    {
+        header("location: {$_SERVER['PHP_SELF']}?error");
+    }
 
-    header('location: ../php/app/logout.php');
     exit();
 }
 catch (PDOException $e){

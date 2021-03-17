@@ -57,27 +57,6 @@ if (document.forms.length > 0){
     }
 }
 
-// var helpHeader = document.querySelector('.card-info > .help-header');
-
-// if (helpHeader !== null && typeof helpHeader !== 'undefined') {
-
-//     helpHeader.addEventListener('click', function(){
-
-//         var helpBody = document.querySelector('.card-info > .help-body');
-
-//         if (this.classList.contains('help-open')) {
-
-//             this.classList.remove('help-open');
-//             helpBody.style.display = 'none';
-
-//         } else {
-
-//             this.classList.add('help-open');
-//             helpBody.style.display = 'block';
-//         }
-//     });
-// }
-
 var returnToTop = document.getElementById('return-to-top');
 
 if (returnToTop !== null && typeof returnToTop !== 'undefined') {
@@ -97,41 +76,3 @@ if (returnToTop !== null && typeof returnToTop !== 'undefined') {
         }
     });
 }
-
-// // Alerts
-// function showAlertSession(element, msg) {
-
-//     var alertSession = document.getElementsByClassName('alert-session');
-
-//     if (alertSession !== null && typeof alertSession !== 'undefined') {
-
-//         for (var i = 0; i < alertSession.length; i++) {
-//             alertSession[i].remove();
-//         }
-//     }
-
-//     var elChild = document.createElement('div');
-
-//     elChild.classList.add('row','alert-session');
-//     elChild.innerHTML = msg;
-
-//     document.querySelector(element).firstElementChild.prepend(elChild);
-//     removeAlertSession();
-// }
-
-// // Alerts
-// function removeAlertSession(time = 15000) {
-
-//     var alertSession = document.getElementsByClassName('alert-session');
-
-//     if (alertSession !== null && typeof alertSession !== 'undefined') {
-
-//         setTimeout(function(){
-//             for (var i = 0; i < alertSession.length; i++) {
-//                 alertSession[i].remove();
-//             }
-//         }, time);
-//     }
-// }
-
-// removeAlertSession();

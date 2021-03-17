@@ -6,7 +6,7 @@ $bbdd_password = CONFIG['BBDD_PASSWORD'];
 
 try{
     //Creem una connexió persistent a BDs
-    $db = new PDO($bbdd_conexio, $bbdd_user, $bbdd_password, array(PDO::ATTR_PERSISTENT => true));
+    $bbdd = new PDO($bbdd_conexio, $bbdd_user, $bbdd_password, array(PDO::ATTR_PERSISTENT => true));
 }catch(PDOException $e){
     echo "Error amb la BDs: {$e->getMessage()}";
     exit();

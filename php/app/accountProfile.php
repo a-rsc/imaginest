@@ -5,7 +5,6 @@ $data = array();
 $data['username'] = filter_input(INPUT_POST, 'username');
 $data['firstname'] = filter_input(INPUT_POST, 'firstname');
 $data['lastname'] = filter_input(INPUT_POST, 'lastname');
-$data['email'] = filter_input(INPUT_POST, 'email');
 
 // username
 if (!(
@@ -42,44 +41,27 @@ if (!empty($data['lastname']))
     }
 }
 
-// email
-if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL))
-{
-    $errors['email'][] = VALIDATION['email']['error']['msg'];
-}
-else if (!(
-    strlen($data['email']) >= VALIDATION['email']['length']['min'] &&
-    strlen($data['email']) <= VALIDATION['email']['length']['max']))
-{
-    $errors['email'][] = VALIDATION['email']['length']['msg'];
-}
-else if (empty($data['email']))
-{
-    $errors['email'][] = VALIDATION['email']['required']['msg'];
-}
-
 if (empty($errors))
 {
     try
     {
-        // Se debe verificar que el username/email no existen en la BDs, si existieran se debería informar al usuario.
-        $sql = 'SELECT count(*) AS existe FROM users WHERE (username = ? || email = ?) AND iduser != ? LIMIT 1';
-        $query = $db->prepare($sql);
-        $query->execute(array($data['username'], $data['email'], $_SESSION['user']['iduser']));
-
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        // Se debe verificar que el username no existe en la BDs.
+        $result = select_accountProfile($_SESSION['user']['iduser'], $data['username']);
 
         if ($result['existe'] == 0)
         {
-            // Update sql
-            $sql = 'UPDATE users SET username = ?, firstname = ?, lastname = ?, email = ? WHERE iduser = ?';
-            $update = $db->prepare($sql);
-            $update->execute(array($data['username'], $data['firstname'], $data['lastname'], $data['email'], $_SESSION['user']['iduser']));
+            // Update
+            update_accountProfile($data['username'], $data['firstname'], $data['lastname'], $_SESSION['user']['iduser']);
 
             $_SESSION['user']['username'] = $data['username'];
             $_SESSION['user']['firstname'] = $data['firstname'];
-            $_SESSION['user']['firstname'] = $data['firstname'];
-            $_SESSION['user']['email'] = $data['email'];
+            $_SESSION['user']['lastname'] = $data['lastname'];
+
+            // https://www.php.net/manual/es/function.ob-end-clean.php
+            // Las cabeceras html se escriben con PHPMailer y se muestra un error que no se puede realizar el redireccionamiento.
+            ob_start();
+            require_once('../php/email/changeProfile.php');
+            ob_end_clean();
         }
         else
         {

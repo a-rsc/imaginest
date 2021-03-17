@@ -2,8 +2,6 @@
 
 try{
 
-    $bbdd = CONFIG['BBDD_NAME'];
-
     $bbdd_script = "
     -- MySQL Workbench Forward Engineering
 
@@ -144,7 +142,7 @@ try{
     SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
           ";
 
-    $bbdd_script = $db->query($bbdd_script);
+    $bbdd_script = $bbdd->query($bbdd_script);
     $bbdd_script->fetchAll(PDO::FETCH_ASSOC);
     $bbdd_script->closeCursor();
 

@@ -7,20 +7,20 @@ $data['activationCode'] = filter_input(INPUT_GET, 'activationCode');
 
 try
 {
-    $sql = 'SELECT iduser, email FROM users WHERE (email = ? && activationCode = ?) && active = 0 && removedOn is null LIMIT 1';
-    $query = $db->prepare($sql);
-    $query->execute(array($data['email'], $data['activationCode']));
-
-    $user = $query->fetch(\PDO::FETCH_ASSOC);
+    // Se debe verificar que existe las condiciones de activación del usuario en la BDs.
+    $user = select_activation($data['email'], $data['activationCode']);
 
     if (!empty($user) && $user['iduser'] != 0)
     {
-        // Update sql
-        $sql = 'UPDATE users SET active = 1, activationCode = NULL, activationDate = now() WHERE iduser = ?';
-        $update = $db->prepare($sql);
-        $update->execute(array($user['iduser']));
+        // Update
+        update_activation($user['iduser']);
 
-        require_once('../php/app/toast/activationSuccess.php');
+        require_once('../php/app/alert/activationSuccess.php');
+    }
+    else
+    {
+        header("location: " . CONFIG['URL'] . "/index.php");
+        exit();
     }
 }
 catch (PDOException $e)

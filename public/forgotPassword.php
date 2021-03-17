@@ -28,7 +28,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
 }
 else if (!(sizeof($_GET) === 2 && isset($_GET['forgotPasswordCode']) && isset($_GET['email'])))
 {
-    header("location: ./index.php");
+    header("location: " . CONFIG['URL'] . "/index.php");
     exit();
 }
 else

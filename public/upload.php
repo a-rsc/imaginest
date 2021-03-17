@@ -2,7 +2,8 @@
 
 session_start();
 
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user']))
+{
     header("location: ./index.php");
     session_destroy();
     exit();
@@ -21,12 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         require_once(dirname(__DIR__, 1) . '/php/app/upload.php');
     }
 
-    // toast
+    // alert
     if (empty($errors) && $_SERVER['REQUEST_METHOD'] === 'POST')
     {
-        require_once(dirname(__DIR__, 1) . '/php/app/toast/uploadSuccess.php');
+        require_once(dirname(__DIR__, 1) . '/php/app/alert/uploadSuccess.php');
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -53,9 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         <button class="btn btn-icon btn-transparent-dark mr-lg-2 d-lg-block" id="sidebarToggle"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search Input-->
         <!-- * * Note: * * Visible only on and above the md breakpoint-->
-        <form class="form-inline mr-auto d-none d-md-block mr-3">
+        <form class="form-inline mr-auto d-none d-md-block mr-3" method="post" action="<?php echo htmlspecialchars(CONFIG['URL'] . "/home.php"); ?>">
             <div class="input-group input-group-joined input-group-solid">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+                <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search" value="<?php if (!empty($data) && array_key_exists('search', $data)) echo $data['search']; ?>" />
                 <div class="input-group-append">
                     <div class="input-group-text"><i class="fas fa-search"></i></div>
                 </div>
@@ -69,9 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                 <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="searchDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-search"></i></a>
                 <!-- Dropdown - Search-->
                 <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--fade-in-up" aria-labelledby="searchDropdown">
-                    <form class="form-inline mr-auto w-100">
+                    <form class="form-inline mr-auto w-100" method="post" action="<?php echo htmlspecialchars(CONFIG['URL'] . "/home.php"); ?>">
                         <div class="input-group input-group-joined input-group-solid">
-                            <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" />
+                            <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search" value="<?php if (!empty($data) && array_key_exists('search', $data)) echo $data['search']; ?>" />
                             <div class="input-group-append">
                                 <div class="input-group-text"><i class="fas fa-search"></i></div>
                             </div>
@@ -158,7 +160,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                 <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
                     <div class="container">
                         <div class="page-header-content pt-4">
-                            <?php echo $toast ?? NULL; ?>
+                            <?php echo $alert ?? NULL; ?>
                             <div class="row align-items-center justify-content-between">
                                 <div class="col-auto mt-4">
                                     <h1 class="page-header-title">
@@ -176,8 +178,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                         <div class="col-lg-8">
                             <div class="card shadow-lg border-lg rounded-lg">
                                 <div class="card-body">
-
 <?php
+
 if (empty($errors) && $_SERVER['REQUEST_METHOD'] === 'POST')
 {
     echo <<< heredoc
@@ -231,7 +233,7 @@ heredoc;
             <!-- Form Group (description)-->
             <div class="form-group">
                 <label class="small mb-1" for="image">Description</label>
-    heredoc;
+heredoc;
 
     echo "<textarea class=\"form-control\" name=\"description\" maxlength=\"" . VALIDATION['description']['length']['max'] . "\" rows=\"6\" cols=\"80\" aria-describedby=\"descriptionHelp\" placeholder=\"Enter a comment for the photo\"></textarea>";
     echo "<small id=\"emaidescriptionHelplHelp\" class=\"form-text text-muted\">Hashtags must be written with #.</small>";
@@ -254,8 +256,8 @@ heredoc;
 
     echo "</form>";
 }
-?>
 
+?>
                                 </div>
                             </div>
                         </div>
@@ -297,5 +299,6 @@ heredoc;
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
+    <script src="js/general.js"></script>
 </body>
 </html>

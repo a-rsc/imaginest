@@ -52,11 +52,8 @@ if (empty($errors))
 {
     try
     {
-        $sql = 'INSERT INTO images (users_iduser, description, publicationDate, name) VALUES (?, ?, now(), ?)';
-        $insert = $db->prepare($sql);
-        $insert->execute(array($_SESSION['user']['iduser'], $data['description'], $data['name']));
-
-        $lastInsertId = $db->lastInsertId();
+        // Insert
+        $lastInsertId = insert_upload_image($_SESSION['user']['iduser'], $data['description'], $data['name']);
 
         if(move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/{$data['name']}"))
         {
@@ -67,20 +64,17 @@ if (empty($errors))
 
                 $hashtag = substr($hashtag, 1);
 
-                $sql = 'SELECT count(*) AS count FROM hashtags WHERE hashtag = ? LIMIT 1';
-                $query = $db->prepare($sql);
-                $query->execute(array($hashtag));
+                // Se deben consultar si los hashtags existen en la BDs.
+                $result = select_upload_hashtag($hashtag);
 
-                if ($query->rowCount() != 0)
+                if ($result['existe'] == 0)
                 {
-                    $sql = 'INSERT INTO hashtags VALUES (?)';
-                    $insert = $db->prepare($sql);
-                    $insert->execute(array($hashtag));
+                    // Insert
+                    insert_upload_hashtag($hashtag);
                 }
 
-                $sql = 'INSERT INTO hashtags_has_images VALUES (?, ?)';
-                $insert = $db->prepare($sql);
-                $insert->execute(array($lastInsertId, $hashtag));
+                // Insert
+                insert_upload_hashtags_has_image($lastInsertId, $hashtag);
             }
         }
     }

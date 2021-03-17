@@ -29,7 +29,7 @@ define('VALIDATION', array(
             'msg' => "Username is a required field!",
         ),
         'length' => array(
-            'min' => 5,
+            'min' => 4,
             'max' => 60,
             'msg' => "Username is not the correct length!",
         ),

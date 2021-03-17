@@ -4,6 +4,14 @@ SHOW TABLES;
 
 SELECT count(*) AS count FROM users WHERE (username = 'benito' || email = 'benito@hotmail.com' ) AND iduser != 4 LIMIT 1;
 
+SELECT i.*, u.username
+    FROM images i
+    LEFT JOIN images_has_users ih ON ih.images_idimages = i.idimages
+    INNER JOIN users u ON u.iduser = i.users_iduser
+    WHERE i.users_iduser != 2 AND (ih.users_iduser IS NULL OR i.idimages NOT IN (SELECT images_idimages FROM images_has_users WHERE users_iduser = 2))
+    AND i.description LIKE ''
+    ORDER BY RAND() LIMIT 1;
+
 -- tables
 SELECT * FROM users;
 SELECT * FROM images;

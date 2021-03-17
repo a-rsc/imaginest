@@ -38,51 +38,36 @@ if (empty($errors))
     try
     {
         // Se debe verificar que el username/email corresponde efectivamente con un username/email registrado en la tabla users y con valor 1 al campo active.
-        $sql = 'SELECT iduser, username, email, password, firstname, lastname FROM users WHERE (username = ? || email = ?) && active = 1 && removedOn is null LIMIT 1';
-        $query = $db->prepare($sql);
-        $query->execute(array($data['login'], $data['login']));
-
-        if ($query)
-        {
-            foreach ($query as $user)
-            {
-                if (password_verify($data['password'], $user['password']))
-                {
-                    // Update sql
-                    $sql = 'UPDATE users SET openSession = ?, lastLogin = now() WHERE iduser = ?';
-                    $update = $db->prepare($sql);
-                    $update->execute(array((boolean) $data['openSession'], $user['iduser']));
-
-                    // El login implica la creación de una sesión de usuario y distintas cookies.
-                    // session_start();
-                    $_SESSION['user'] = $user;
-                    setcookie("username", $user['username'], time()+3600*24*7);
-                    setcookie("email", $user['email'], time()+3600*24*7);
-                    setcookie("openSession", $data['openSession'], time()+3600*24*7);
-
-                    header("location: ./home.php");
-                    exit();
-                }
-            }
-        }
-
-        // Se debe verificar que el username/email corresponde efectivamente con un username/email registrado en la tabla users y con valor 1 al campo active.
-        $sql = 'SELECT iduser, username, email, password, firstname, lastname FROM users WHERE (username = ? || email = ?) && removedOn is null LIMIT 1';
-        $query = $db->prepare($sql);
-        $query->execute(array($data['login'], $data['login']));
-
-        $user = $query->fetch(\PDO::FETCH_ASSOC);
+        $user = select_login($data['login']);
 
         if (!empty($user) && $user['iduser'] != 0)
         {
             if (password_verify($data['password'], $user['password']))
             {
-                // Update sql
+                // Update
+                update_login($data['openSession'], $user['iduser']);
+
+                // El login implica la creación de una sesión de usuario y distintas cookies.
+                $_SESSION['user'] = $user;
+                setcookie("username", $user['username'], time()+3600*24*7, '/');
+                setcookie("openSession", $data['openSession'], time()+3600*24*7, '/');
+
+                header("location: " . CONFIG['URL'] . "/home.php");
+                exit();
+            }
+        }
+
+        // Se debe verificar que el username/email corresponde efectivamente con un username/email registrado en la tabla users y con valor 0 al campo active.
+        $user = select_login_noActive($data['login'], $data['login']);
+
+        if (!empty($user) && $user['iduser'] != 0)
+        {
+            if (password_verify($data['password'], $user['password']))
+            {
+                // Update
                 // Si el usuario ha perdido el código de activación, cuando intenta logearse si no está activo se vuelve a enviar otro código
                 $data['activationCode'] = hash('sha256', random_int(1, 1000));
-                $sql = 'UPDATE users SET openSession = ?, activationCode = ? WHERE iduser = ?';
-                $update = $db->prepare($sql);
-                $update->execute(array((boolean) $data['openSession'], $data['activationCode'], $user['iduser']));
+                update_login_noActive($data['openSession'], $data['activationCode'], $user['iduser']);
 
                 // https://www.php.net/manual/es/function.ob-end-clean.php
                 // Las cabeceras html se escriben con PHPMailer y se muestra un error que no se puede realizar el redireccionamiento.
@@ -90,18 +75,16 @@ if (empty($errors))
                 require_once('../php/email/register.php');
                 ob_end_clean();
 
-                header("location: ./index.php?activationPending");
+                header("location: " . CONFIG['URL'] . "/index.php?activationPending");
                 exit();
             }
         }
         else
         {
-            // Se debe verificar que el username/email corresponde efectivamente con un username/email registrado en la tabla users y con valor 1 al campo active.
-            $sql = 'SELECT count(*) AS count FROM users WHERE (username = ? || email = ?) && removedOn is not null LIMIT 1';
-            $query = $db->prepare($sql);
-            $query->execute(array($data['login'], $data['login']));
+            // Se debe verificar que el username/email corresponde efectivamente con un username/email registrado en la tabla users.
+            $result = select_login_removed($data['login']);
 
-            if ($query->rowCount() != 0)
+            if ($result['existe'] == 1)
             {
                 $errors['accountDeleted'][] = VALIDATION['accountDeleted']['error']['msg'];
             }

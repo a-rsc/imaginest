@@ -35,26 +35,19 @@ if (empty($errors))
 {
     try
     {
-        // Select sql
-        $sql = 'SELECT password FROM users WHERE iduser = ? LIMIT 1';
-        $query = $db->prepare($sql);
-        $query->execute(array($_SESSION['user']['iduser']));
-
-        $user = $query->fetch(\PDO::FETCH_ASSOC);
+        // Se debe consultar el password del usuario para verificarlo a continuación.
+        $user = select_accountSecurity($_SESSION['user']['iduser']);
 
         if (empty($errors) && (!empty($user)) && password_verify($data['password'], $user['password']))
         {
-            // Update sql
-            $sql = 'UPDATE users SET password = ? WHERE iduser = ?';
-            $update = $db->prepare($sql);
-            $update->execute(array(helper_password_hash($data['newPassword']), $_SESSION['user']['iduser']));
+            // Update
+            update_accountSecurity($data['newPassword'], $_SESSION['user']['iduser']);
 
             // https://www.php.net/manual/es/function.ob-end-clean.php
             // Las cabeceras html se escriben con PHPMailer y se muestra un error que no se puede realizar el redireccionamiento.
             ob_start();
             require_once('../php/email/changePassword.php');
             ob_end_clean();
-
         }
         else if (!password_verify($data['password'], $user['password']))
         {

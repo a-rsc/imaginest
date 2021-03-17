@@ -88,19 +88,14 @@ if (empty($errors))
     try
     {
         // Se debe verificar que el username/email no existen en la BDs, si existieran se debería informar al usuario.
-        $sql = 'SELECT iduser, email FROM users WHERE username = ? || email = ? LIMIT 1';
-        $query = $db->prepare($sql);
-        $query->execute(array($data['username'], $data['email']));
+        $result = select_register($data['username'], $data['email']);
 
-        if ($query->rowCount() == 0)
+        if ($result['existe'] == 0)
         {
-            // Insert sql
+            // Insert
             // Durante el proceso de registro del usuario se genera un aleatorio que se utiliza en la activación de la cuenta.
             $data['activationCode'] = hash('sha256', random_int(1, 1000));
-            $sql = 'INSERT INTO users (username, email, firstname, lastname, password, activationCode) VALUES(?, ?, ?, ?, ?, ?)';
-
-            $insert = $db->prepare($sql);
-            $insert->execute(array($data['username'], $data['email'], $data['firstname'], $data['lastname'], password_hash($data['password'], PASSWORD_DEFAULT), $data['activationCode']));
+            insert_register($data['username'], $data['email'], $data['firstname'], $data['lastname'], $data['password'], $data['activationCode']);
 
             // https://www.php.net/manual/es/function.ob-end-clean.php
             // Las cabeceras html se escriben con PHPMailer y se muestra un error que no se puede realizar el redireccionamiento.
@@ -108,7 +103,7 @@ if (empty($errors))
             require_once('../php/email/register.php');
             ob_end_clean();
 
-            header("location: ./index.php?activationPending");
+            header("location: " . CONFIG['URL'] . "/index.php?activationPending");
             exit();
         }
 

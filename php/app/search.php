@@ -1,30 +1,23 @@
 <?php
 
-// $data = array();
+$data = array();
 
-// $data['search'] = filter_input(INPUT_POST, 'search');
+$data['search'] = filter_input(INPUT_POST, 'search');
 
-$search = filter_input(INPUT_POST, 'search');
-
-if($search<>'')
+if(!empty($data['search']))
 {
-    $part = explode(" ", $search);
-    $num = count($part);
+    // image
+    $havefun = select_home_images($_SESSION['user']['iduser'], $data['search']);
 
-    if($num == 1)
+    if (!empty($havefun))
     {
-        $cadbusca="SELECT  description FROM images WHERE description LIKE '%$search%'";
+        // like
+        $havefun = array_merge($havefun, select_home_likes($havefun['idimages']));
 
-    }else if($num > 1)
-    {
-        $cadbusca="SELECT  description
-      AGAINST (  '$search' ) AS busqueda FROM images WHERE
-      MATCH ( description ) AGAINST (  '$search' ) ORDER  BY busqueda DESC";
-    }
-    $result=mysql($cadbusca);
-    While($row=mysql_fetch_object($result))
-    {
-        $descripcion=$row->description;
-        echo $descripcion."<br>";
+        // dislike
+        $havefun = array_merge($havefun, select_home_dislikes($havefun['idimages']));
+
+        // hashtags
+        $havefun['hashtags'] = array_column(select_hashtags_by_image($havefun['idimages']), 'hashtags_hashtag');
     }
 }

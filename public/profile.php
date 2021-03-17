@@ -2,7 +2,8 @@
 
 session_start();
 
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user']))
+{
     header("location: ./index.php");
     session_destroy();
     exit();
@@ -17,10 +18,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
     $errors = array();
 
     if (
-        (sizeof($_POST) === 2 && isset($_POST['username']) && isset($_POST['email'])) ||
-        (sizeof($_POST) === 3 && isset($_POST['username']) && isset($_POST['firstname']) && isset($_POST['email'])) ||
-        (sizeof($_POST) === 3 && isset($_POST['username']) && isset($_POST['lastname']) && isset($_POST['email'])) ||
-        (sizeof($_POST) === 4 && isset($_POST['username']) && isset($_POST['firstname']) && isset($_POST['lastname']) && isset($_POST['email'])))
+        (sizeof($_POST) === 1 && isset($_POST['username'])) ||
+        (sizeof($_POST) === 2 && isset($_POST['username']) && isset($_POST['firstname'])) ||
+        (sizeof($_POST) === 2 && isset($_POST['username']) && isset($_POST['lastname'])) ||
+        (sizeof($_POST) === 3 && isset($_POST['username']) && isset($_POST['firstname']) && isset($_POST['lastname'])))
     {
         require_once(dirname(__DIR__, 1) . '/php/app/accountProfile.php');
     }
@@ -56,9 +57,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
         <button class="btn btn-icon btn-transparent-dark mr-lg-2 d-lg-block" id="sidebarToggle"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search Input-->
         <!-- * * Note: * * Visible only on and above the md breakpoint-->
-        <form class="form-inline mr-auto d-none d-md-block mr-3">
+        <form class="form-inline mr-auto d-none d-md-block mr-3" method="post" action="<?php echo htmlspecialchars(CONFIG['URL'] . "/home.php"); ?>">
             <div class="input-group input-group-joined input-group-solid">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+                <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search" value="<?php if (!empty($data) && array_key_exists('search', $data)) echo $data['search']; ?>" />
                 <div class="input-group-append">
                     <div class="input-group-text"><i class="fas fa-search"></i></div>
                 </div>
@@ -72,9 +73,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
                 <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="searchDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-search"></i></a>
                 <!-- Dropdown - Search-->
                 <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--fade-in-up" aria-labelledby="searchDropdown">
-                    <form class="form-inline mr-auto w-100">
+                    <form class="form-inline mr-auto w-100" method="post" action="<?php echo htmlspecialchars(CONFIG['URL'] . "/home.php"); ?>">
                         <div class="input-group input-group-joined input-group-solid">
-                            <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" />
+                            <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search" value="<?php if (!empty($data) && array_key_exists('search', $data)) echo $data['search']; ?>" />
                             <div class="input-group-append">
                                 <div class="input-group-text"><i class="fas fa-search"></i></div>
                             </div>
@@ -180,6 +181,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
                         <a class="nav-link" href="<?php echo CONFIG['URL'] . "/security.php"; ?>" title="Security">Security</a>
                     </nav>
                     <hr class="mt-0 mb-4" />
+                    <?php echo $alert ?? NULL; ?>
                     <div class="row">
                         <div class="col-xl-4">
                             <!-- Profile picture card-->
@@ -221,12 +223,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
                                                 <input type="text" id="lastname" class="form-control" name="lastname" <?php echo "minlength='" . VALIDATION['lastname']['length']['min'] . "' maxlength='" . VALIDATION['lastname']['length']['max'] . "'"; ?> placeholder="Last name" value="<?php if (!empty($data) && array_key_exists('lastname', $data)) echo $data['lastname']; else echo $_SESSION['user']['lastname']; ?>"autocomplete="family-name">
                                                 <?php if (!empty($errors) && array_key_exists('lastname', $errors)) echo "<p class='errors'>" . reset($errors['lastname']) . "</p>"; ?>
                                             </div>
-                                        </div>
-                                        <!-- Form Group (email address)-->
-                                        <div class="form-group">
-                                            <label class="small mb-1" for="email">Correo electrónico</label>
-                                            <input type="email" id="email" class="form-control" name="email" placeholder="Correo electrónico" value="<?php if (!empty($data) && array_key_exists('email', $data)) echo $data['email'];  else echo $_SESSION['user']['email']; ?>" required>
-                                            <?php if (!empty($errors) && array_key_exists('email', $errors)) echo "<p class='errors'>" . reset($errors['email']) . "</p>"; ?>
                                         </div>
                                         <!-- Save changes button-->
                                         <div class="form-group">
@@ -287,5 +283,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST')
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
+    <script src="js/general.js"></script>
 </body>
 </html>

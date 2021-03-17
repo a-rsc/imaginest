@@ -2,24 +2,14 @@
 
 session_start();
 
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user']))
+{
     header("location: ./index.php");
     session_destroy();
     exit();
 }
 
-require_once('../php/config/env.php');
-require_once('../php/bbdd/connecta_db_persistent.php');
-require_once('../php/app/helpers.php');
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST')
-{
-    if (sizeof($_POST) === 1 && isset($_POST['busqueda']))
-    {
-        require_once('../php/app/search.php');
-    }
-}
-
+require_once(dirname(__DIR__, 1) . '/php/config/env.php');
 
 ?>
 <!DOCTYPE html>
@@ -49,9 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         <button class="btn btn-icon btn-transparent-dark mr-lg-2 d-lg-block" id="sidebarToggle"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search Input-->
         <!-- * * Note: * * Visible only on and above the md breakpoint-->
-        <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="form-inline mr-auto d-none d-md-block mr-3">
+        <form class="form-inline mr-auto d-none d-md-block mr-3" method="post" action="<?php echo htmlspecialchars(CONFIG['URL'] . "/home.php"); ?>">
             <div class="input-group input-group-joined input-group-solid">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search"/>
+                <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search" value="<?php if (!empty($data) && array_key_exists('search', $data)) echo $data['search']; ?>" />
                 <div class="input-group-append">
                     <div class="input-group-text"><i class="fas fa-search"></i></div>
                 </div>
@@ -65,9 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                 <a class="btn btn-icon btn-transparent-dark dropdown-toggle" id="searchDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-search"></i></a>
                 <!-- Dropdown - Search-->
                 <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--fade-in-up" aria-labelledby="searchDropdown">
-                    <form class="form-inline mr-auto w-100">
+                    <form class="form-inline mr-auto w-100" method="post" action="<?php echo htmlspecialchars(CONFIG['URL'] . "/home.php"); ?>">
                         <div class="input-group input-group-joined input-group-solid">
-                            <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" />
+                            <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search" value="<?php if (!empty($data) && array_key_exists('search', $data)) echo $data['search']; ?>" />
                             <div class="input-group-append">
                                 <div class="input-group-text"><i class="fas fa-search"></i></div>
                             </div>
@@ -119,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                         </a>
                         <div class="collapse show" id="collapseDashboards" data-parent="#accordionSidenav">
                             <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
-                                <a class="nav-link active" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="Have fun">Have fun</a>
+                                <a class="nav-link" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="Have fun">Have fun</a>
                                 <a class="nav-link" href="<?php echo CONFIG['URL'] . "/upload.php"; ?>" title="Upload a post">Upload a post</a>
                                 <a class="nav-link" href="<?php echo CONFIG['URL'] . "/myposts.php"; ?>" title="My posts">My posts</a>
                             </nav>
@@ -154,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                 <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
                     <div class="container">
                         <div class="page-header-content pt-4">
-                            <?php echo $toast ?? NULL; ?>
+                            <?php echo $alert ?? NULL; ?>
                             <div class="row align-items-center justify-content-between">
                                 <div class="col-auto mt-4">
                                     <h1 class="page-header-title">
@@ -167,109 +157,99 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                         </div>
                     </div>
                 </header>
-                <!-- GALERIA -->
-                <!--
-                <div class="container-fluid conten" style="margin-top: 3rem;">
-                    <div class="px-lg-5">
-                        <div class="row">
+                <?php
 
-                        <?php
-                        /*
-                            $sql = "SELECT users_iduser, description, name FROM images WHERE users_iduser = ?";
-                            $query = $db->prepare($sql);
-                            $query->execute(array($_SESSION['user']['iduser']));
+                $images = select_myposts($_SESSION['user']['iduser']);
 
-                            $row = $query->fetchAll();
-                            if($row > 0)
+                if (!empty($images))
+                {
+                    echo <<< heredoc
+                    <div class="gallerybody">
+                        <div id="top"></div>
+                        <section class="gallery">
+                            <div class="container">
+                                <ul>
+                                    <a href="#" class="close"></a>
+heredoc;
+
+                            $i = 0;
+
+                            foreach($images as $image)
                             {
-                                foreach($row as $image)
-                                {
-                                    //echo '<div class="col-12"></div>';
-                                        echo '<div class="col-xl-3 col-lg-4 col-md-6 mb-4">';
-                                            echo "<div class=\"bg-white rounded shadow-sm\"><img src=\"./uploads/{$image['name']}\" alt=\"\" class=\"img-fluid card-img-top\">";
-                                                echo '<div class="p-4">';
-                                                // <h5> <a href="#" class="text-dark">And She Realized</a></h5>
-                                                    echo "<p class=\"small text-muted mb-0\">{$image['description']} . </p>";
-                                                echo '</div>';
-                                            echo '</div>';
-                                        echo '</div>';
-                                }
-
-                            }else
-                            {
-                                echo '<div class="col-xl-12 col-lg-12 col-md-12 mb-4"></div>';
-                                echo '<div class="col-xl-12 col-lg-12 col-md-12 mb-4">';
-                                    echo "<p class='small text-center mb-0'>You don't have any pictures in Imaginest</p>";
-                                    echo '<div class="col text-center">';
-                                        echo '<a href="./upload.php" class="center-block btn btn-light" title="Upload">Upload an image here</a>';
-                                    echo '</div>';
-                                echo '</div>';
-                            }*/
-                            ?>
-                        </div>
-                    </div>
-                </div>
--->
-            <div class="gallerybody">
-                    <div id="top"></div>
-                    <section class="gallery">
-
-                        <?php
-                            $sql = "SELECT users_iduser, description, name FROM images WHERE users_iduser = ?";
-                            $query = $db->prepare($sql);
-                            $query->execute(array($_SESSION['user']['iduser']));
-
-                            $row = $query->fetchAll();
-                            if($row > 0)
-                            {
-                                echo "<div class=\"row\">";
-                                    echo "<ul>";
-                                        echo "<a href=\"#\" class=\"close\"></a>";
-                                        $i = 0;
-                                        foreach($row as $image)
-                                        {
-                                            $item[$i] = $i;
-                                            //echo '<div class="col-12"></div>';
-                                            echo "<li>";
-                                                echo "<a class=\"image fancybox\" href=\"#$item[$i]\">";
-                                                    echo "<img src=\"./uploads/{$image['name']}\" alt=\"\" class=\"zoom\">";
-                                                echo '</a>';
-                                            echo "</li>";
-                                            $i++;
-                                        }
-
-                                    echo "</ul>";
-                                echo "</div>";
-
-                                $i = 0;
-                                foreach($row as $image)
-                                {
-                                    echo "<div id=\"$item[$i]\" class=\"card port\">";
-                                        echo "<div class=\"row\">";
-                                            echo "<div class=\"description\">";
-                                                echo "<p class=\"medium mb-0\">{$image['description']}</p>";
-                                            echo "</div>";
-                                            echo "<img src=\"./uploads/{$image['name']}\" alt=\"\">";
-                                        echo "</div>";
-                                    echo "</div>";
-                                    $i++;
-                                }
-
-                            }else
-                            {
-                                echo '<div class="col-xl-12 col-lg-12 col-md-12 mb-4"></div>';
-                                echo '<div class="col-xl-12 col-lg-12 col-md-12 mb-4">';
-                                    echo "<p class='small text-center mb-0'>You don't have any pictures in Imaginest</p>";
-                                    echo '<div class="col text-center">';
-                                        echo '<a href="./upload.php" class="center-block btn btn-light" title="Upload">Upload an image here</a>';
-                                    echo '</div>';
-                                echo '</div>';
+                                echo <<< heredoc
+                                    <li>
+                                        <a class="image fancybox" href="#myposts{$i}">
+                                            <img src="./uploads/{$image['name']}" alt="{$image['name']}" class="zoom">
+                                        </a>
+                                    </li>
+heredoc;
+                                $i++;
                             }
 
-                        ?>
+                            echo <<< heredoc
+                                </ul>
+                            </div>
+heredoc;
 
-                    </section>
-                </div>
+                    $i = 0;
+
+                    foreach($images as $image)
+                    {
+                        echo <<< heredoc
+                        <div id="myposts{$i}" class="card port py-3">
+                            <div class="container">
+                            <div class="row">
+                                <div class="col position-relative">
+                                    <img src="./uploads/{$image['name']}" alt="{$image['name']}" class="img-fluid border border-lg shadow w-100">
+                                    <div class="position-absolute" style="bottom: 10px;">
+heredoc;
+
+                                        $hashtags = array_column(select_hashtags_by_image($image['idimages']), 'hashtags_hashtag');
+
+                                        foreach ($hashtags as $hashtag)
+                                        {
+                                            echo "<span class=\"badge badge-pill badge-" . COLOURS[array_rand(COLOURS, 1)] . " mx-3\">#{$hashtag}</span>";
+                                        }
+
+                                        echo <<< heredoc
+                                    </div>
+                                </div>
+                                <div class="col description">
+                                    <div class="w-100"><p>Uploaded: <span class="text-primary">{$image['publicationDate']}</span></p><p>{$image['description']}</p></div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+heredoc;
+
+                        $i++;
+                    }
+
+                    echo <<< heredoc
+                        </section>
+                    </div>
+heredoc;
+
+                }
+                else
+                {
+                    echo <<< heredoc
+                    <div class="container" style="margin-top: -3rem;">
+                        <div class="row">
+                            <div class="col">
+                                <div class="card shadow-lg border-lg rounded-lg">
+                                    <div class="card-body text-center">
+                                        <p class="text-center">You don't have any pictures in Imaginest.</p>
+                                        <a href="./upload.php" class="btn btn-primary" title="Upload a post">Upload a post</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+heredoc;
+                }
+
+                ?>
                 <!-- Main page content-->
                 <section class="container-fluid position-fixed p-0 d-sm-block d-lg-none" style="bottom: 5rem;">
                     <div class="row text-center shadow-lg border-lg rounded-lg">
@@ -306,6 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
+    <script src="js/general.js"></script>
     <script src="js/myposts.js"></script>
 </body>
 </html>

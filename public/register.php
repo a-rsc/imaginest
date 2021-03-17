@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                                         I accept the
                                                         <a href="<?php echo CONFIG['URL'] . "/terms.php"; ?>" title="Terms & Conditions." target="_black">Terms &amp; Conditions.</a>
                                                     </label>
-                                                    <?php if (!empty($errors) && array_key_exists('termsAndConditions', $errors)) echo "<p class='errors'>" . reset($errors['termsAndConditions']) . "</p>"; ?>
+                                                    <?php if (!empty($errors) && array_key_exists('termsAndConditions', $errors)) echo "<p class='errors' style='margin-left: -26px;'>" . reset($errors['termsAndConditions']) . "</p>"; ?>
                                                 </div>
                                             <!-- Form Group (create account submit)-->
                                             <button type="submit" class="mt-3 btn btn-primary" title="Sign up">Sign up</button>
@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
                                                 }
                                                 else if (array_key_exists('noRegister', $errors))
                                                 {
-                                                    echo "<p class='errors'>" . reest($errors['noRegister']) . "</p>";
+                                                    echo "<p class='errors'>" . reset($errors['noRegister']) . "</p>";
                                                 }
                                             }
                                         ?>

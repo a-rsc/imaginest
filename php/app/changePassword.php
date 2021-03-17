@@ -43,18 +43,12 @@ if (empty($errors))
     try
     {
         // Se debe verificar que el username/email corresponde efectivamente con un username/email registrado en la tabla users...
-        $sql = 'SELECT iduser FROM users WHERE (email = ? && resetPasswordCode = ?) && resetPasswordExpiry > (now() - interval 30 minute) && resetPassword = 1 && removedOn is null LIMIT 1';
-        $query = $db->prepare($sql);
-        $query->execute(array($data['email'], $data['forgotPasswordCode']));
-
-        $user = $query->fetch(\PDO::FETCH_ASSOC);
+        $user = select_changePassword($data['email'], $data['forgotPasswordCode']);
 
         if (!empty($user) && $user['iduser'] != 0)
         {
-            // Update sql
-            $sql = 'UPDATE users SET password = ?, resetPassword = 0, resetPasswordCode = NULL, resetPasswordExpiry = now() WHERE iduser = ?';
-            $update = $db->prepare($sql);
-            $update->execute(array(helper_password_hash($data['password']), $user['iduser']));
+            // Update
+            update_changePassword($data['password'], $user['iduser']);
 
             // https://www.php.net/manual/es/function.ob-end-clean.php
             // Las cabeceras html se escriben con PHPMailer y se muestra un error que no se puede realizar el redireccionamiento.
@@ -62,7 +56,7 @@ if (empty($errors))
             require_once('../php/email/changePassword.php');
             ob_end_clean();
 
-            header("location: ./index.php?resetPasswordSuccess");
+            header("location: " . CONFIG['URL'] . "/index.php?resetPasswordSuccess");
             exit();
         }
 
