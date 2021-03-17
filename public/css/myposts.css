@@ -1,7 +1,3 @@
-a {
-    color: #fff;
-}
-
 .gallery ul li {
     float: left;
     margin: 0 0.8771929824561403%;
@@ -101,14 +97,6 @@ a {
     width: 50%;
 }
 
-.port .description {
-    float: left;
-    width: 50%;
-    max-height: 100%;
-    padding: 0 40px 40px;
-    overflow: auto;
-}
-
 .port h1 {
     font-size: 35px;
     line-height: 2.3;
@@ -170,26 +158,24 @@ img.zoom {
     -ms-transition: all .3s ease-in-out;
 }
 
-
 .transition {
     -webkit-transform: scale(1.2);
     -moz-transform: scale(1.2);
     -o-transform: scale(1.2);
     transform: scale(1.2);
 }
-    .modal-header {
 
-     border-bottom: none;
+.modal-header {
+
+    border-bottom: none;
 }
-    .modal-title {
-        color:#000;
-    }
-    .modal-footer{
-      display:none;
-    }
 
-.description p {
-    color: #000;
+.modal-title {
+    color:#000;
+}
+
+.modal-footer{
+    display:none;
 }
 
 .gallerybody {

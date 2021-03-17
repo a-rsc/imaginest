@@ -214,7 +214,7 @@ heredoc;
                                         echo <<< heredoc
                                     </div>
                                 </div>
-                                <div class="col description">
+                                <div class="col">
                                     <div class="w-100"><p>Uploaded: <span class="text-primary">{$image['publicationDate']}</span></p><p>{$image['description']}</p></div>
                                 </div>
                             </div>
