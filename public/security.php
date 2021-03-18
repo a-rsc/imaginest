@@ -245,24 +245,24 @@ else
                         </div>
                     </div>
                 </div>
-                <!-- Main page content-->
-                <section class="container-fluid position-fixed p-0 d-sm-block d-lg-none" style="bottom: 5rem;">
-                    <div class="row text-center shadow-lg border-lg rounded-lg">
-                        <div class="col bg-white py-4">
-                            <a class="nav-link" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="Have fun"><i class="fas fa-home display-3"></i></a>
-                        </div>
-                        <div class="col bg-gradient-primary-to-secondary py-4">
-                        <a class="nav-link" href="<?php echo CONFIG['URL'] . "/upload.php"; ?>" title="Upload a post"><i class="text-white fas fa-camera display-3"></i></a>
-                        </div>
-                        <div class="col bg-white py-4">
-                        <a class="nav-link" href="<?php echo CONFIG['URL'] . "/profile.php"; ?>" title="Profile"><i class="fas fa-user display-3"></i></a>
-                        </div>
-                    </div>
-                </section>
             </main>
             <footer class="footer mt-auto footer-light text-primary">
-                <div class="container-fluid">
-                    <div class="row">
+                <!-- Main page content-->
+                <div class="container-fluid p-0">
+                    <div class="d-sm-block d-lg-none">
+                        <div class="row text-center shadow-lg border-lg rounded-lg">
+                            <div class="col bg-white p-0">
+                                <a class="nav-link" href="<?php echo CONFIG['URL'] . "/home.php"; ?>" title="Have fun"><i class="fas fa-home display-4"></i></a>
+                            </div>
+                            <div class="col bg-gradient-primary-to-secondary p-0">
+                            <a class="nav-link" href="<?php echo CONFIG['URL'] . "/upload.php"; ?>" title="Upload a post"><i class="text-white fas fa-camera display-4"></i></a>
+                            </div>
+                            <div class="col bg-white p-0">
+                            <a class="nav-link" href="<?php echo CONFIG['URL'] . "/profile.php"; ?>" title="Profile"><i class="fas fa-user display-4"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row py-1 px-2">
                         <div class="col-md-6 small text-center text-md-left">All rights reserved &copy; <a href="<?php echo CONFIG['URL'] . "/index.php"; ?>" title="<?php echo CONFIG['APP_NAME']; ?>"><?php echo CONFIG['APP_NAME']; ?></a> &middot; <?php echo date("Y"); ?></div>
                         <div class="col-md-6 small text-center text-md-right">
                             <a href="<?php echo CONFIG['URL'] . "/privacy.php"; ?>" title="Privacy Policy">Privacy Policy</a>
