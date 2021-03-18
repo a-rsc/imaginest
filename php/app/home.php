@@ -10,10 +10,10 @@ try
     if (!empty($havefun))
     {
         // like
-        $havefun = array_merge($havefun, select_home_likes($havefun['idimages']));
+        $havefun = array_merge($havefun, select_vote_likes($havefun['idimages']));
 
         // dislike
-        $havefun = array_merge($havefun, select_home_dislikes($havefun['idimages']));
+        $havefun = array_merge($havefun, select_vote_dislikes($havefun['idimages']));
 
         // hashtags
         $havefun['hashtags'] = array_column(select_hashtags_by_image($havefun['idimages']), 'hashtags_hashtag');

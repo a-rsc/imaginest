@@ -167,34 +167,6 @@ function select_home_images($iduser, $search = '')
     return $query->fetch(\PDO::FETCH_ASSOC);
 }
 
-function select_home_likes($idimages)
-{
-    global $bbdd; // hacemos la variable $bbdd global para que la función tenga acceso.
-
-    $sql = 'SELECT count(*) as likes
-    FROM images_has_users
-    WHERE images_idimages = ? AND vote = \'like\';';
-
-    $query = $bbdd->prepare($sql);
-    $query->execute(array($idimages));
-
-    return $query->fetch(\PDO::FETCH_ASSOC);
-}
-
-function select_home_dislikes($idimages)
-{
-    global $bbdd; // hacemos la variable $bbdd global para que la función tenga acceso.
-
-    $sql = 'SELECT count(*) as dislikes
-    FROM images_has_users
-    WHERE images_idimages = ? AND vote = \'dislike\';';
-
-    $query = $bbdd->prepare($sql);
-    $query->execute(array($idimages));
-
-    return $query->fetch(\PDO::FETCH_ASSOC);
-}
-
 function select_hashtags_by_image($idimages)
 {
     global $bbdd; // hacemos la variable $bbdd global para que la función tenga acceso.

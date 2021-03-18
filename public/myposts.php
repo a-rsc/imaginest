@@ -192,9 +192,16 @@ heredoc;
 heredoc;
 
                     $i = 0;
+                    $myposts = array();
 
                     foreach($images as $image)
                     {
+                        // like
+                        $myposts = array_merge($myposts, select_vote_likes($image['idimages']));
+
+                        // dislike
+                        $myposts = array_merge($myposts, select_vote_dislikes($image['idimages']));
+
                         echo <<< heredoc
                         <div id="myposts{$i}" class="card port py-3">
                             <div class="container">
@@ -216,6 +223,24 @@ heredoc;
                                 </div>
                                 <div class="col description">
                                     <div class="w-100"><p>Uploaded: <span class="text-primary">{$image['publicationDate']}</span></p><p>{$image['description']}</p></div>
+                                    <div class="text-center mx-auto">
+heredoc;
+
+                                        for ($j=0; $j < 5; $j++)
+                                        {
+                                            if ($j/5 < $image['average'])
+                                            {
+                                                echo "<i class=\"mx-1 fas fa-heart h3 text-red\"></i>";
+                                            }
+                                            else
+                                            {
+                                                echo "<i class=\"mx-1 fas fa-heart h3\"></i>";
+                                            }
+                                        }
+
+                                        echo <<< heredoc
+                                        <span class="d-block my-2">{$myposts['likes']} likes · {$myposts['dislikes']} dislikes</span>
+                                    </div>
                                 </div>
                             </div>
                             </div>

@@ -220,10 +220,10 @@ heredoc;
 
                                     echo <<< heredoc
                                                     <input type="hidden" name="image" value="{$havefun['idimages']}">
-                                                    <input type="radio" id="like" name="vote" value="like" style="display: none;">
-                                                    <label for="like"><i class="vote fas fa-heart-broken display-3 mr-1"></i></label>
                                                     <input type="radio" id="dislike" name="vote" value="dislike" style="display: none;">
-                                                    <label for="dislike"><i class="vote fas fa-heart display-3 ml-1"></i></label>
+                                                    <label for="dislike"><i class="vote fas fa-heart display-3 mr-1"></i></label>
+                                                    <input type="radio" id="like" name="vote" value="like" style="display: none;">
+                                                    <label for="like"><i class="vote fas fa-heart-broken display-3 ml-1"></i></label>
                                                 </form>
                                             </div>
                                         </div>
