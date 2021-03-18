@@ -140,7 +140,7 @@ try{
     SET SQL_MODE=@OLD_SQL_MODE;
     SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
     SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-          ";
+              ";
 
     $bbdd_script = $bbdd->query($bbdd_script);
     $bbdd_script->fetchAll(PDO::FETCH_ASSOC);
