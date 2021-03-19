@@ -23,6 +23,7 @@ if(in_array($extension, $extensionAllowed))
         if($data['size'] < 5*1024*1024)
         {
             $data['name'] .= random_int(1, 1000000);
+            $data['name'] = hash('sha256', $data['name']);
         }
         else
         {
