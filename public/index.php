@@ -64,7 +64,7 @@ else
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Imaginest is a web application to share and enjoy images" />
+    <meta name="description" content="<?php echo CONFIG['APP_NAME']; ?> is a web application to share and enjoy images" />
     <meta name="author" content="Inmanol Garcia, Alvaro Rodriguez" />
     <title><?php echo CONFIG['APP_NAME']; ?></title>
     <link href="css/styles.css" rel="stylesheet" />
